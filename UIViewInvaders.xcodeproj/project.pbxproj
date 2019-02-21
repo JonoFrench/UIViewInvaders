@@ -14,6 +14,7 @@
 		34D72268221ADEF500A46057 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34D72266221ADEF500A46057 /* LaunchScreen.storyboard */; };
 		34D72270221ADF5400A46057 /* Sprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7226F221ADF5400A46057 /* Sprite.swift */; };
 		34D72272221C535100A46057 /* extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D72271221C535100A46057 /* extentions.swift */; };
+		34D72274221F0AAD00A46057 /* Numbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D72273221F0AAD00A46057 /* Numbers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		34D72269221ADEF500A46057 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34D7226F221ADF5400A46057 /* Sprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sprite.swift; sourceTree = "<group>"; };
 		34D72271221C535100A46057 /* extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extentions.swift; sourceTree = "<group>"; };
+		34D72273221F0AAD00A46057 /* Numbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Numbers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			children = (
 				34D7225D221ADEF200A46057 /* AppDelegate.swift */,
 				34D7225F221ADEF200A46057 /* ViewController.swift */,
+				34D72273221F0AAD00A46057 /* Numbers.swift */,
 				34D72261221ADEF200A46057 /* Main.storyboard */,
 				34D72264221ADEF500A46057 /* Assets.xcassets */,
 				34D72266221ADEF500A46057 /* LaunchScreen.storyboard */,
@@ -143,6 +146,7 @@
 			files = (
 				34D72272221C535100A46057 /* extentions.swift in Sources */,
 				34D72260221ADEF200A46057 /* ViewController.swift in Sources */,
+				34D72274221F0AAD00A46057 /* Numbers.swift in Sources */,
 				34D72270221ADF5400A46057 /* Sprite.swift in Sources */,
 				34D7225E221ADEF200A46057 /* AppDelegate.swift in Sources */,
 			);
