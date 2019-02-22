@@ -756,6 +756,15 @@ let widthConstraint = {(me:UIView,toView:UIView,width:Int) -> NSLayoutConstraint
     return NSLayoutConstraint(item: me, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.greaterThanOrEqual, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: toView.frame.width / CGFloat(width))
 }
 
+
+//let heightConstraint = {(me:UIView,toView:UIView,height:CGFloat) -> NSLayoutConstraint in
+//    return NSLayoutConstraint(item: me, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.greaterThanOrEqual, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: toView.frame.height / height)
+//}
+//
+//let widthConstraint = {(me:UIView,toView:UIView,width:CGFloat) -> NSLayoutConstraint in
+//    return NSLayoutConstraint(item: me, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.greaterThanOrEqual, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: toView.frame.width / width)
+//}
+
 let topConstraint = {(me:UIView, toView:UIView) -> NSLayoutConstraint in
     return NSLayoutConstraint(item: me, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: toView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: 0)
 }

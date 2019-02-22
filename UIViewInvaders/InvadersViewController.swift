@@ -8,15 +8,17 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class InvadersViewController: UIViewController {
     
     @IBOutlet weak var leftButton: UIView?
     @IBOutlet weak var rightButton: UIView?
     @IBOutlet weak var fireButton: UIView?
     @IBOutlet weak var baseLine: UIView?
     @IBOutlet weak var coverView: UIView?
+    @IBOutlet weak var scoreBox: UIView?
+    
+    var model:InvadersModel = InvadersModel()
     var baseSpeed: CGFloat = 2
-    var baseAnimationTimer: TimeInterval = TimeInterval()
     var leftMove: CGFloat = 0
     var rightMove: CGFloat = 0
     var base:Base?
@@ -31,23 +33,47 @@ class ViewController: UIViewController {
     var invaderYSpeed:Int = 0
     var bombSpeed:Int = 4
     var deadCount:Int = 0
-    var gameState:GameState = .loading
-    var lives:Int = 3
-    var score:Int = 0
+
+    var scoreView:UIView?
     
-    enum GameState {
-        case loading
-        case playing
-        case ending
-        //case gameOver
-        //case hiScore
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        //Set the model
+        model.viewController = self
         self.view.backgroundColor = .black
+
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setControls()
+        scoreView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
+        scoreBox?.addSubview(scoreView!)
+        scoreBox?.addConstraint(leftConstraint(scoreView!,scoreBox!))
+        scoreBox?.addConstraint(rightConstraint(scoreView!,scoreBox!))
+        scoreBox?.addConstraint(topConstraint(scoreView!,scoreBox!))
+        scoreBox?.addConstraint(bottomConstraint(scoreView!,scoreBox!))
+        scoreBox?.translatesAutoresizingMaskIntoConstraints = false
+        //scoreBox?.addSubview(scoreView!)
         
+        setIntro()
+        setStars()
+        setSilos()
+        self.view.bringSubviewToFront(coverView!)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let displayLink:CADisplayLink = CADisplayLink(target: self, selector: #selector(refreshDisplay))
+        displayLink.add(to: .main, forMode:.common)
+    }
+    
+    func setControls(){
+        //Set up gesture recognizers for the controls
         let leftButtonGesture = UILongPressGestureRecognizer(target: self, action: #selector(leftPressed))
         leftButtonGesture.minimumPressDuration = 0
         leftButtonGesture.allowableMovement = 0
@@ -62,38 +88,49 @@ class ViewController: UIViewController {
         fireGesture.numberOfTapsRequired = 1
         fireButton?.addGestureRecognizer(fireGesture)
         
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        //Set the control layers
         fireButton?.layer.cornerRadius = (fireButton?.frame.height)! / 2
         leftButton?.roundCorners(corners:[.topLeft,.bottomLeft], radius: (leftButton?.frame.height)! / 2)
         rightButton?.roundCorners(corners:[.topRight,.bottomRight], radius: (rightButton?.frame.height)! / 2)
-        coverView?.backgroundColor = .black
-        coverView?.alpha = 0.75
-        //let oo = Numbers(pos: CGPoint(x: 50, y: 50), height: 30, width: 30)
-        //oo.spriteView!.alpha = 1.0
-        //coverView?.addSubview(oo.spriteView!)
-        setStars()
-        setSilos()
-        self.view.bringSubviewToFront(coverView!)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let displayLink:CADisplayLink = CADisplayLink(target: self, selector: #selector(refreshDisplay))
-        displayLink.add(to: .main, forMode:.common)
+    func setIntro(){
+        self.view.layoutIfNeeded()
+        coverView?.layoutIfNeeded()
+        coverView?.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+        let w = coverView?.frame.width
+        let h = coverView?.frame.height
+        print("width \(w!)")
+        let title = UIView(frame: CGRect(x: 0, y: 50, width: w!, height: 90))
+        title.addSubview(AlphaNumeric.get(string: "UIVIEW", size: (title.frame.size), fcol: .red, bcol:.white ))
+        title.backgroundColor = .clear
+        coverView?.addSubview(title)
+        let subTitle = UIView(frame: CGRect(x: 0, y: 170, width: w!, height: 60))
+        subTitle.addSubview(AlphaNumeric.get(string: "INVADERS", size: (subTitle.frame.size), fcol: .green, bcol:.red ))
+        subTitle.backgroundColor = .clear
+        coverView?.addSubview(subTitle)
+        
+        let subTitle2 = UIView(frame: CGRect(x: 20, y: h!-100, width: w! - 40, height: 30))
+        subTitle2.addSubview(AlphaNumeric.get(string: "PRESS FIRE", size: (subTitle2.frame.size), fcol: .red, bcol:.yellow ))
+        subTitle2.backgroundColor = .clear
+        coverView?.addSubview(subTitle2)
+        
+        let subTitle3 = UIView(frame: CGRect(x: 20, y: h! - 60, width: w! - 40, height: 30))
+        subTitle3.addSubview(AlphaNumeric.get(string: "TO START", size: (subTitle3.frame.size), fcol: .red, bcol:.yellow ))
+        subTitle3.backgroundColor = .clear
+        coverView?.addSubview(subTitle3)
     }
     
     func resetGame() {
-        coverView?.alpha = 0.75
         self.view.bringSubviewToFront(coverView!)
-        gameState = .loading
+        model.gameState = .loading
         invaderXSpeed = 2
         invaderYSpeed = 0
         bombSpeed = 4
         deadCount = 0
-        lives = 3
+        model.lives = 3
+        model.score = 0
+        
         for i in invaders {
             i.spriteView?.removeFromSuperview()
         }
@@ -120,14 +157,26 @@ class ViewController: UIViewController {
     }
     
     func startGame() {
-        
+
         UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
             self.coverView!.alpha = 0
         }, completion: { (finished: Bool) in
+            self.updateScore()
             self.setInvaders()
             self.setBase()
         })
 
+    }
+    
+    func updateScore() {
+        let scoreString = String(format: "%06d", model.score)
+        scoreView?.removeFromSuperview()
+        scoreView =  AlphaNumeric.get(string: scoreString, size: (scoreBox?.frame.size)!, fcol: .white, bcol: .red)
+        //scoreBox?.setNeedsLayout()
+        //scoreBox?.setNeedsDisplay()
+        scoreBox?.setNeedsUpdateConstraints()
+        //sb.backgroundColor = .clear
+        scoreBox?.addSubview(scoreView!)
     }
     
     func setStars() {
@@ -202,7 +251,7 @@ class ViewController: UIViewController {
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.gameState = .playing
+            self.model.gameState = .playing
             
         }
         
@@ -254,6 +303,7 @@ class ViewController: UIViewController {
                         bullet?.spriteView?.removeFromSuperview()
                         bulletFired = false
                         deadCount += 1
+                        model.score += 10
                     }
                 }
             }
@@ -267,6 +317,7 @@ class ViewController: UIViewController {
                 if motherShip!.checkHit(pos: (bullet?.spriteView?.center)!) == true {
                     bullet?.spriteView?.removeFromSuperview()
                     bulletFired = false
+                    model.score += 100
                 }
             }
         }
@@ -290,8 +341,8 @@ class ViewController: UIViewController {
                     bombs.remove(at: index)
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.lives -= 1
-                    if self.lives == 0 {
+                    self.model.lives -= 1
+                    if self.model.lives == 0 {
                         self.resetGame()
                     } else {
                         self.setBase()
@@ -332,7 +383,7 @@ class ViewController: UIViewController {
                 }
             }
             if (base?.checkHit(pos: (inv.spriteView?.frame)!))! {
-                gameState = .ending
+                model.gameState = .ending
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                     self.resetGame()
                     
@@ -350,14 +401,27 @@ class ViewController: UIViewController {
     }
     
     @objc func refreshDisplay() {
-        if gameState == .loading || gameState == .ending {return}
         
-        moveBase()
-        checkBullets()
-        checkInvaders()
-        moveInvaders()
-        checkBombs()
-        checkMothership()
+        switch model.gameState {
+        case .starting:
+            break
+        case .loading:
+            break
+        case .ending:
+            break
+        case .playing:
+            moveBase()
+            checkBullets()
+            checkInvaders()
+            moveInvaders()
+            checkBombs()
+            checkMothership()
+            break
+        case .gameOver:
+            break
+        case .hiScore:
+            break
+        }
     }
     
     func moveInvaders() {
@@ -370,7 +434,7 @@ class ViewController: UIViewController {
     }
     
     @objc func leftPressed(gesture:UILongPressGestureRecognizer) {
-        guard gameState == .playing else {
+        guard model.gameState == .playing else {
             return
         }
         if gesture.state == .began {
@@ -382,7 +446,7 @@ class ViewController: UIViewController {
     }
     
     @objc func rightPressed(gesture:UILongPressGestureRecognizer) {
-        guard gameState == .playing else {
+        guard model.gameState == .playing else {
             return
         }
         if gesture.state == .began {
@@ -394,7 +458,7 @@ class ViewController: UIViewController {
     
     
     @objc func fire(gesture:UITapGestureRecognizer) {
-        guard bulletFired == false else {
+        guard bulletFired == false && model.gameState != .starting else {
             return
         }
         
@@ -405,7 +469,8 @@ class ViewController: UIViewController {
             
         }
         
-        if gameState == .loading {
+        if model.gameState == .loading {
+            model.gameState = .starting
             startGame()
         } else {
             let basePos:CGPoint = (base?.spriteView?.center)!
