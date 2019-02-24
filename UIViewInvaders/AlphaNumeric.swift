@@ -318,9 +318,9 @@ let pixelArray:[[Int]] =
 
 struct AlphaNumeric {
     
-    private static let charDict: [Character:Int] = ["0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"A":10,"B":11,"C":12,"D":13,"E":14,"F":15,"G":16,"H":17,"I":18,"J":19,"K":20,"L":21,"M":22,"N":23,"O":24,"P":25,"Q":26,"R":27,"S":28,"T":29,"U":30,"V":31,"W":32,"X":33,"Y":34,"Z":35," ":36,".":37]
+    private let charDict: [Character:Int] = ["0":0,"1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9,"A":10,"B":11,"C":12,"D":13,"E":14,"F":15,"G":16,"H":17,"I":18,"J":19,"K":20,"L":21,"M":22,"N":23,"O":24,"P":25,"Q":26,"R":27,"S":28,"T":29,"U":30,"V":31,"W":32,"X":33,"Y":34,"Z":35," ":36,".":37]
     
-    private static func getChar(char:Character,size:CGSize,position:CGPoint,fcol:UIColor,bcol:UIColor) -> UIView {
+    private func getChar(char:Character,size:CGSize,position:CGPoint,fcol:UIColor,bcol:UIColor) -> UIView {
         let charPos = charDict[char]
         if let pos = charPos {
             let charView = UIView(frame: CGRect(origin: position, size: size))
@@ -339,30 +339,49 @@ struct AlphaNumeric {
         }
         return UIView()
     }
+  
+    private func getCharAndArray(char:Character,size:CGSize,position:CGPoint,fcol:UIColor,bcol:UIColor) -> StringView {
+        var sv = StringView()
+        let charPos = charDict[char]
+        if let pos = charPos {
+            let charView = UIView(frame: CGRect(origin: position, size: size))
+            charView.backgroundColor = .clear
+            let alphaArray = layoutSprite(8,8,pixelArray[pos],charView)
+            for (index, item) in pixelArray[pos].enumerated() {
+                if item == 1 {
+                    alphaArray[index].backgroundColor = bcol
+                } else if item == 2 {
+                    alphaArray[index].backgroundColor = fcol
+                } else {
+                    alphaArray[index].backgroundColor = .clear
+                }
+            }
+            sv.charView = charView
+            sv.charViewArray = alphaArray
+            return sv
+        }
+        return StringView()
+    }
     
-    static func get(string:String,size:CGSize,fcol:UIColor,bcol:UIColor) -> UIView {
+    func get(string:String,size:CGSize,fcol:UIColor,bcol:UIColor) -> UIView {
         var constraintsArray:[NSLayoutConstraint] = []
         var charViewArray:[UIView] = []
         let stringView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: size))
         //stringView.translatesAutoresizingMaskIntoConstraints = false
         let charWidth:CGFloat = size.width / CGFloat(string.count)
-        print("width \(size.width) charw \(charWidth)")
+        print("getting string \(string) width \(size.width) charw \(charWidth)")
         for (index, item) in string.uppercased().enumerated() {
             let v = getChar(char: item, size: CGSize(width: charWidth, height: size.height), position: CGPoint(x:CGFloat(index) * charWidth , y: 0),fcol: fcol, bcol: bcol)
             //v.translatesAutoresizingMaskIntoConstraints = false
             charViewArray.append(v)
             stringView.addSubview(v)
-            //v.layoutIfNeeded()
-            //print("char \(item) index \(index)")
             constraintsArray.append(heightConstraint(v,stringView,Int(size.height)))
             constraintsArray.append(widthConstraint(v,stringView,Int(charWidth)))
             if index == 0 {
                 constraintsArray.append(leftConstraint(v,stringView))
-                print("left")
             }
             else if index == string.count - 1
             {
-                print("right")
                 constraintsArray.append(rightConstraint(v,stringView))
                 constraintsArray.append(leftConstraint(v,charViewArray[index - 1]))
             } else {
@@ -378,4 +397,68 @@ struct AlphaNumeric {
         stringView.layoutIfNeeded()
         return stringView
     }
+    
+    func getStringView(string:String,size:CGSize,fcol:UIColor,bcol:UIColor) -> StringViewArray {
+        var sv:StringView = StringView()
+        var sva:StringViewArray = StringViewArray()
+        var constraintsArray:[NSLayoutConstraint] = []
+        sv.charView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: size))
+        //stringView.translatesAutoresizingMaskIntoConstraints = false
+        let charWidth:CGFloat = size.width / CGFloat(string.count)
+        print("getting string view \(string) width \(size.width) charw \(charWidth)")
+        sva.charViewArray.removeAll()
+        for (index, item) in string.uppercased().enumerated() {
+            let v = getCharAndArray(char: item, size: CGSize(width: charWidth, height: size.height), position: CGPoint(x:CGFloat(index) * charWidth , y: 0),fcol: fcol, bcol: bcol)
+            //v.translatesAutoresizingMaskIntoConstraints = false
+            sva.charViewArray.append(v.charViewArray)
+            sv.charView?.addSubview(v.charView!)
+            constraintsArray.append(heightConstraint(v.charView!,sv.charView!,Int(size.height)))
+            constraintsArray.append(widthConstraint(v.charView!,sv.charView!,Int(charWidth)))
+            if index == 0 {
+                constraintsArray.append(leftConstraint(v.charView!,sv.charView!))
+            }
+            else if index == string.count - 1
+            {
+                constraintsArray.append(rightConstraint(v.charView!,sv.charView!))
+               // constraintsArray.append(leftConstraint(v,sv.charViewArray[index - 1]))
+            } else {
+              //  constraintsArray.append(leftConstraint(v,sv.charViewArray[index - 1]))
+            }
+            
+            constraintsArray.append(topConstraint(v.charView!,sv.charView!))
+            constraintsArray.append(bottomConstraint(v.charView!,sv.charView!))
+            
+        }
+        //NSLayoutConstraint.activate(constraintsArray)
+        sv.charView!.sizeToFit()
+        sv.charView!.layoutIfNeeded()
+        sva.charView = sv.charView
+        return sva
+    }
+    
+    func updateChar(char:Character,viewArray:[UIView],fcol:UIColor,bcol:UIColor) {
+        let charPos = charDict[char]
+        if let pos = charPos {
+            for (index, item) in pixelArray[pos].enumerated() {
+                if item == 1 {
+                    viewArray[index].backgroundColor = bcol
+                } else if item == 2 {
+                    viewArray[index].backgroundColor = fcol
+                } else {
+                    viewArray[index].backgroundColor = .clear
+                }
+            }
+        }
+    }
 }
+
+struct StringView {
+    var charViewArray:[UIView] = []
+    var charView:UIView?
+}
+
+struct StringViewArray {
+    var charViewArray:[[UIView]] = [[]]
+    var charView:UIView?
+}
+

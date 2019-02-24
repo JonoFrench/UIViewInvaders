@@ -20,8 +20,14 @@ extension UIView {
 
 extension NSObject {
     func copyObject<T:NSObject>() throws -> T? {
-        let data = try NSKeyedArchiver.archivedData(withRootObject:self, requiringSecureCoding:false)
-        return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T
+        if #available(iOS 11.0, *) {
+            let data = try NSKeyedArchiver.archivedData(withRootObject:self, requiringSecureCoding:false)
+            return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T
+
+        } else {
+            return (NSKeyedUnarchiver.unarchiveObject(with: NSKeyedArchiver.archivedData(withRootObject: self)) as! T)
+            // Fallback on earlier versions
+        }
     }
 }
 

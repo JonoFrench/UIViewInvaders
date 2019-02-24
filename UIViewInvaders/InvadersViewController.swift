@@ -16,63 +16,61 @@ class InvadersViewController: UIViewController {
     @IBOutlet weak var baseLine: UIView?
     @IBOutlet weak var coverView: UIView?
     @IBOutlet weak var scoreBox: UIView?
+    @IBOutlet weak var levelBox: UIView?
+    @IBOutlet weak var livesBox: UIView?
+    
+    var introView:UIView?
+    var gameoverView:UIView?
+    var levelView:UIView?
+    var livesView:UIView?
     
     var model:InvadersModel = InvadersModel()
-    var baseSpeed: CGFloat = 2
-    var leftMove: CGFloat = 0
-    var rightMove: CGFloat = 0
     var base:Base?
     var motherShip:MotherShip?
     var baseLineY: CGFloat = 0
-    var bulletFired: Bool = false
     var bullet:Bullet?
     var invaders:[Invader] = []
     var bombs:[Bomb] = []
     var silos:[Silo] = []
-    var invaderXSpeed:Int = 2
-    var invaderYSpeed:Int = 0
-    var bombSpeed:Int = 4
-    var deadCount:Int = 0
-
-    var scoreView:UIView?
     
-
+    var scoreView:StringViewArray = StringViewArray()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //Set the model
         model.viewController = self
         self.view.backgroundColor = .black
-
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setControls()
-        scoreView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 40))
-        scoreBox?.addSubview(scoreView!)
-        scoreBox?.addConstraint(leftConstraint(scoreView!,scoreBox!))
-        scoreBox?.addConstraint(rightConstraint(scoreView!,scoreBox!))
-        scoreBox?.addConstraint(topConstraint(scoreView!,scoreBox!))
-        scoreBox?.addConstraint(bottomConstraint(scoreView!,scoreBox!))
-        scoreBox?.translatesAutoresizingMaskIntoConstraints = false
-        //scoreBox?.addSubview(scoreView!)
+        setScore()
+        setLevel()
+        setLives()
         
-        setIntro()
-        setStars()
-        setSilos()
-        self.view.bringSubviewToFront(coverView!)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        
+        self.view.bringSubviewToFront(coverView!)
         let displayLink:CADisplayLink = CADisplayLink(target: self, selector: #selector(refreshDisplay))
         displayLink.add(to: .main, forMode:.common)
     }
     
-    func setControls(){
+    override func viewDidLayoutSubviews() {
+        super .viewDidLayoutSubviews()
+        if !model.layoutSet {
+            model.layoutSet = true
+            setIntro()
+            setStars()
+            setSilos()
+        }
+    }
+    
+   fileprivate func setControls(){
         //Set up gesture recognizers for the controls
         let leftButtonGesture = UILongPressGestureRecognizer(target: self, action: #selector(leftPressed))
         leftButtonGesture.minimumPressDuration = 0
@@ -94,94 +92,164 @@ class InvadersViewController: UIViewController {
         rightButton?.roundCorners(corners:[.topRight,.bottomRight], radius: (rightButton?.frame.height)! / 2)
     }
     
-    func setIntro(){
+   fileprivate func setIntro(){
         self.view.layoutIfNeeded()
+        introView = UIView(frame: (coverView?.frame)!)
+
+        if let introView = introView, let coverView = coverView {
+            coverView.layoutIfNeeded()
+            coverView.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+            coverView.addSubview(introView)
+            introView.layoutIfNeeded()
+           introView.center = coverView.center
+            introView.backgroundColor = .clear
+            let alpha:AlphaNumeric = AlphaNumeric()
+            print("cover width \(coverView.frame.width) intro width \(introView.frame.width)")
+            let w = coverView.frame.width
+            let h = coverView.frame.height
+            let title = UIView(frame: CGRect(x: 0, y: 50, width: w, height: 90))
+            title.addSubview(alpha.get(string: "UIVIEW", size: (title.frame.size), fcol: .red, bcol:.white ))
+            title.backgroundColor = .clear
+            introView.addSubview(title)
+            let subTitle = UIView(frame: CGRect(x: 0, y: 170, width: w, height: 60))
+            subTitle.addSubview(alpha.get(string: "INVADERS", size: (subTitle.frame.size), fcol: .green, bcol:.red ))
+            subTitle.backgroundColor = .clear
+            introView.addSubview(subTitle)
+            
+            let subTitle2 = UIView(frame: CGRect(x: 20, y: h-100, width: w - 40, height: 30))
+            subTitle2.addSubview(alpha.get(string: "PRESS FIRE", size: (subTitle2.frame.size), fcol: .red, bcol:.yellow ))
+            subTitle2.backgroundColor = .clear
+            introView.addSubview(subTitle2)
+            
+            let subTitle3 = UIView(frame: CGRect(x: 20, y: h - 60, width: w - 40, height: 30))
+            subTitle3.addSubview(alpha.get(string: "TO START", size: (subTitle3.frame.size), fcol: .red, bcol:.yellow ))
+            subTitle3.backgroundColor = .clear
+            introView.addSubview(subTitle3)
+            print("invaders width \(subTitle.frame.width)")
+
+    }
+    }
+    
+   fileprivate func setGameOver(){
+        self.view.layoutIfNeeded()
+        let alpha:AlphaNumeric = AlphaNumeric()
         coverView?.layoutIfNeeded()
         coverView?.backgroundColor = UIColor.black.withAlphaComponent(0.75)
         let w = coverView?.frame.width
         let h = coverView?.frame.height
         print("width \(w!)")
         let title = UIView(frame: CGRect(x: 0, y: 50, width: w!, height: 90))
-        title.addSubview(AlphaNumeric.get(string: "UIVIEW", size: (title.frame.size), fcol: .red, bcol:.white ))
+        title.addSubview(alpha.get(string: "UIVIEW", size: (title.frame.size), fcol: .red, bcol:.white ))
         title.backgroundColor = .clear
         coverView?.addSubview(title)
         let subTitle = UIView(frame: CGRect(x: 0, y: 170, width: w!, height: 60))
-        subTitle.addSubview(AlphaNumeric.get(string: "INVADERS", size: (subTitle.frame.size), fcol: .green, bcol:.red ))
+        subTitle.addSubview(alpha.get(string: "INVADERS", size: (subTitle.frame.size), fcol: .green, bcol:.red ))
         subTitle.backgroundColor = .clear
         coverView?.addSubview(subTitle)
         
         let subTitle2 = UIView(frame: CGRect(x: 20, y: h!-100, width: w! - 40, height: 30))
-        subTitle2.addSubview(AlphaNumeric.get(string: "PRESS FIRE", size: (subTitle2.frame.size), fcol: .red, bcol:.yellow ))
+        subTitle2.addSubview(alpha.get(string: "PRESS FIRE", size: (subTitle2.frame.size), fcol: .red, bcol:.yellow ))
         subTitle2.backgroundColor = .clear
         coverView?.addSubview(subTitle2)
         
         let subTitle3 = UIView(frame: CGRect(x: 20, y: h! - 60, width: w! - 40, height: 30))
-        subTitle3.addSubview(AlphaNumeric.get(string: "TO START", size: (subTitle3.frame.size), fcol: .red, bcol:.yellow ))
+        subTitle3.addSubview(alpha.get(string: "TO START", size: (subTitle3.frame.size), fcol: .red, bcol:.yellow ))
         subTitle3.backgroundColor = .clear
         coverView?.addSubview(subTitle3)
+        let subTitle4 = UIView(frame: CGRect(x: 20, y: h! / 2, width: w! - 40, height: 30))
+        subTitle4.addSubview(alpha.get(string: "GAME OVER", size: (subTitle4.frame.size), fcol: .red, bcol:.yellow ))
+        subTitle4.backgroundColor = .clear
+        coverView?.addSubview(subTitle4)
     }
     
-    func resetGame() {
+   fileprivate func resetGame() {
         self.view.bringSubviewToFront(coverView!)
-        model.gameState = .loading
-        invaderXSpeed = 2
-        invaderYSpeed = 0
-        bombSpeed = 4
-        deadCount = 0
-        model.lives = 3
-        model.score = 0
+        model.reset()
         
         for i in invaders {
-            i.spriteView?.removeFromSuperview()
+            if let isv = i.spriteView {
+                isv.removeFromSuperview()
+            }
         }
         invaders.removeAll()
         
         for s in silos {
-            s.spriteView?.removeFromSuperview()
+            if let ssv = s.spriteView {
+                ssv.removeFromSuperview()
+            }
         }
         silos.removeAll()
         setSilos()
         
         for b in bombs {
-            b.spriteView?.removeFromSuperview()
+            if let bsv = b.spriteView {
+                bsv.removeFromSuperview()
+            }
         }
         bombs.removeAll()
-
+        
         base?.spriteView?.removeFromSuperview()
         base = nil
         
-        if motherShip != nil {
-            motherShip?.spriteView?.removeFromSuperview()
+        if let msv = motherShip?.spriteView {
+            msv.removeFromSuperview()
             motherShip = nil
         }
     }
     
-    func startGame() {
-
+   fileprivate func startGame() {
+        
         UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
             self.coverView!.alpha = 0
         }, completion: { (finished: Bool) in
+            self.introView?.removeFromSuperview()
             self.updateScore()
             self.setInvaders()
             self.setBase()
         })
+    }
+    
+   func setScore() {
+    let scoreString = String(format: "%06d", model.score)
+        let alpha:AlphaNumeric = AlphaNumeric()
+        scoreView = alpha.getStringView(string: scoreString, size: (scoreBox?.frame.size)!, fcol: .white, bcol: .red)
+    scoreBox?.addSubview(scoreView.charView!)
 
     }
     
-    func updateScore() {
+   func updateScore() {
+        let alpha:AlphaNumeric = AlphaNumeric()
         let scoreString = String(format: "%06d", model.score)
-        scoreView?.removeFromSuperview()
-        scoreView =  AlphaNumeric.get(string: scoreString, size: (scoreBox?.frame.size)!, fcol: .white, bcol: .red)
-        //scoreBox?.setNeedsLayout()
-        //scoreBox?.setNeedsDisplay()
-        scoreBox?.setNeedsUpdateConstraints()
-        //sb.backgroundColor = .clear
-        scoreBox?.addSubview(scoreView!)
+        for (index, char) in scoreString.enumerated() {
+            alpha.updateChar(char: char, viewArray: scoreView.charViewArray[index], fcol: .white, bcol: .red)
+        }
     }
     
-    func setStars() {
+   func setLevel() {
+        if levelView != nil {
+            levelView?.removeFromSuperview()
+        }
+        let levelString = "LEVEL\(model.level)"
+        let alpha:AlphaNumeric = AlphaNumeric()
+        let lv = alpha.getStringView(string: levelString, size: (levelBox?.frame.size)!, fcol: .white, bcol: .red)
+        levelView = lv.charView
+        levelBox?.addSubview(levelView!)
+    }
+    
+    func setLives() {
+        if livesView != nil {
+            livesView?.removeFromSuperview()
+        }
+        let levelString = "Lives\(model.lives)"
+        let alpha:AlphaNumeric = AlphaNumeric()
+        let lv = alpha.getStringView(string: levelString, size: (livesBox?.frame.size)!, fcol: .white, bcol: .red)
+        livesView = lv.charView
+        livesBox?.addSubview(livesView!)
+    }
+    
+   fileprivate func setStars() {
         let w = Int(self.view.frame.width)
-        let h = Int((baseLine?.frame.maxY)!) 
+        let h = Int((baseLine?.frame.minY)!)
         for _ in 1...500 {
             let x = Int.random(in: 0...w)
             let y = Int.random(in: 0...h)
@@ -191,20 +259,21 @@ class InvadersViewController: UIViewController {
         }
     }
     
-    func setSilos() {
+   fileprivate func setSilos() {
         let sx = self.view.frame.width / 6
         for i in 1...3 {
             let s = Silo(pos: CGPoint(x: sx * CGFloat(i*2) - (sx), y: 600), height: 60, width: 80)
-            self.view.addSubview((s.spriteView)!)
-            silos.append(s)
+                self.view.addSubview(s.spriteView!)
+                silos.append(s)
         }
     }
     
-    func setBase() {
-        if base != nil {
-            base?.spriteView?.removeFromSuperview()
+   fileprivate func setBase() {
+        if let base = base {
+            base.spriteView?.removeFromSuperview()
         }
-        
+        model.leftMove = 0
+        model.rightMove = 0
         baseLineY = ((baseLine?.center.y)!) - 15
         base = Base(pos: CGPoint(x: 150, y: baseLineY), height: 30, width: 45)
         if let base = base {
@@ -219,20 +288,19 @@ class InvadersViewController: UIViewController {
                 base.spriteView?.alpha = 1
                 base.spriteView?.center = CGPoint(x: self.view.frame.width / 2, y: self.baseLineY)
             }, completion: { (finished: Bool) in
+                self.model.gameState = .playing
                 base.position = CGPoint(x: self.view.frame.width / 2, y: self.baseLineY)
             })
         }
-        
-        
     }
     
     
-    func setInvaders() {
+    fileprivate func setInvaders() {
         
         let viewWidth = self.view.frame.width
         let step = viewWidth / 6
         for i in stride(from: step, to: step * 6, by: step) {
-            for z in stride(from: 100, to: 480, by: 60){
+            for z in stride(from: 100, to: 400, by: 60){
                 let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: 40, width: 40)
                 invader.spriteView?.alpha = 0
                 invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
@@ -256,14 +324,16 @@ class InvadersViewController: UIViewController {
         }
         
     }
-    func checkMothership()
+    fileprivate func checkMothership()
     {
-        if motherShip == nil {
+        let yPos = (scoreBox?.center.y)! + 30
         
-        if Int.random(in: 0...300) == 1 {
-            motherShip = MotherShip(pos: CGPoint(x: self.view.frame.width + 10, y: 60), height: 30, width: 45)
-            self.view.addSubview(motherShip!.spriteView!)
-            motherShip?.animate()
+        if motherShip == nil {
+            
+            if Int.random(in: 0...300) == 1 {
+                motherShip = MotherShip(pos: CGPoint(x: self.view.frame.width + 10, y: yPos), height: 30, width: 45)
+                self.view.addSubview(motherShip!.spriteView!)
+                motherShip?.animate()
             }
         } else {
             let x = (motherShip?.position.x)!
@@ -271,53 +341,56 @@ class InvadersViewController: UIViewController {
                 motherShip?.spriteView?.removeFromSuperview()
                 motherShip = nil
             } else {
-            motherShip?.position = CGPoint(x: x - 1, y: 60)
+                motherShip?.position = CGPoint(x: x - 1, y: yPos)
             }
-
+            
         }
     }
     
-    
     fileprivate func moveBase() {
-        if base != nil {
-            let x = (base?.position.x)!
-            let y = (base?.position.y)!
-            if leftMove > 0 && x > 0 {
-                base?.position = CGPoint(x: x - baseSpeed, y: y)
-            } else if rightMove > 0 && x < self.view.frame.width {
-                base?.position = CGPoint(x: x + baseSpeed, y: y)
+        if let base = base {
+            let x = base.position.x
+            let y = base.position.y
+            if model.leftMove > 0 && x > 0 {
+                base.position = CGPoint(x: x - model.baseSpeed, y: y)
+            } else if model.rightMove > 0 && x < self.view.frame.width {
+                base.position = CGPoint(x: x + model.baseSpeed, y: y)
             }
         }
     }
     
     fileprivate func checkBullets() {
-        if bulletFired {
-            let pos = (bullet?.position)!
-            if pos.y <= 0 {
-                bulletFired = false
-                bullet?.spriteView?.removeFromSuperview()
-            } else {
-                bullet?.position = CGPoint(x: pos.x, y: pos.y - 8)
-                for inv in invaders {
-                    if inv.checkHit(pos: (bullet?.spriteView?.center)!) == true {
-                        bullet?.spriteView?.removeFromSuperview()
-                        bulletFired = false
-                        deadCount += 1
-                        model.score += 10
+        if model.bulletFired {
+            if let bullet = bullet, let spriteView = bullet.spriteView {
+                let pos = bullet.position
+                if pos.y <= 0 {
+                    model.bulletFired = false
+                    bullet.spriteView?.removeFromSuperview()
+                } else {
+                    bullet.position = CGPoint(x: pos.x, y: pos.y - 8)
+                    for inv in invaders {
+                        if inv.checkHit(pos: spriteView.center) == true {
+                            spriteView.removeFromSuperview()
+                            model.bulletFired = false
+                            model.deadCount += 1
+                            model.score += 10
+                        }
                     }
                 }
-            }
-            for s in silos {
-                if (s.checkHit(pos:(bullet?.position)!)) {
-                    bullet?.spriteView?.removeFromSuperview()
-                    bulletFired = false
+                
+                for s in silos {
+                    if (s.checkHit(pos:bullet.position)) {
+                        spriteView.removeFromSuperview()
+                        model.bulletFired = false
+                    }
                 }
-            }
-            if motherShip != nil {
-                if motherShip!.checkHit(pos: (bullet?.spriteView?.center)!) == true {
-                    bullet?.spriteView?.removeFromSuperview()
-                    bulletFired = false
-                    model.score += 100
+                
+                if motherShip != nil {
+                    if motherShip!.checkHit(pos:spriteView.center) == true {
+                        spriteView.removeFromSuperview()
+                        model.bulletFired = false
+                        model.score += 100
+                    }
                 }
             }
         }
@@ -325,33 +398,36 @@ class InvadersViewController: UIViewController {
     
     fileprivate func checkBombs() {
         for (index,bomb) in bombs.enumerated() {
-            if bomb.position.y > baseLineY {
-                //bomb.spriteView?.removeFromSuperview()
-                bomb.isDying = true
-                if index > bombs.count {
-                    bombs.remove(at: index)
-                }
-                continue
-            }
-            bomb.move(x: 0, y: bombSpeed)
-            if (base?.checkHit(pos:bomb.position))! {
-                //bomb.spriteView?.removeFromSuperview()
-                bomb.isDying = true
-                if index > bombs.count {
-                    bombs.remove(at: index)
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.model.lives -= 1
-                    if self.model.lives == 0 {
-                        self.resetGame()
-                    } else {
-                        self.setBase()
-                    }
-                    
-                }
-                continue
-            }
+            if bomb.isDying || bomb.isDead {continue}
             
+            if bomb.position.y > baseLineY {
+                bomb.isDying = true
+                if index > bombs.count {
+                    bombs.remove(at: index)
+                }
+                continue
+            }
+            bomb.move(x: 0, y: model.bombSpeed)
+            if model.gameState == .playing {
+                if let b = base {
+                    if b.checkHit(pos:bomb.position) {
+                        bomb.isDying = true
+                        if index > bombs.count {
+                            bombs.remove(at: index)
+                        }
+                        model.gameState = .ending
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            self.model.lives -= 1
+                            if self.model.lives == 0 {
+                                self.resetGame()
+                            } else {
+                                self.setBase()
+                            }
+                        }
+                        continue
+                    }
+                }
+            }
             for s in silos {
                 if (s.checkHit(pos:bomb.position)) {
                     bomb.isDying = true
@@ -366,36 +442,44 @@ class InvadersViewController: UIViewController {
     fileprivate func checkInvaders() {
         for inv in invaders {
             if inv.isDead {continue}
-            if Int.random(in: 0...1000) == 1 {
+            if Int.random(in: 0...1000) == 1 && model.gameState == .playing {
                 dropBomb(pos: inv.position)
             }
-            if invaderXSpeed > 0 {
+            if model.invaderXSpeed > 0 {
                 if inv.position.x > self.view.frame.width - 10 {
-                    invaderXSpeed = -2 - (deadCount / 8)
-                    invaderYSpeed = 5
+                    model.invaderXSpeed = -2 - (model.deadCount / 8)
+                    model.invaderYSpeed = 5
                     break
                 }
             } else {
                 if inv.position.x < 10 {
-                    invaderXSpeed = 2 + (deadCount / 8)
-                    invaderYSpeed = 5
+                    model.invaderXSpeed = 2 + (model.deadCount / 8)
+                    model.invaderYSpeed = 5
                     break
                 }
             }
-            if (base?.checkHit(pos: (inv.spriteView?.frame)!))! {
-                model.gameState = .ending
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                    self.resetGame()
-                    
+            if let b = base, let i = inv.spriteView {
+                if i.frame.minY > baseLineY - 40 {
+                    model.gameState = .ending
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        //game over They've landed
+                        self.resetGame()
+                    }
                 }
-               // print("base hit inv")
+                if b.checkHit(pos: (i.frame)) {
+                    model.gameState = .ending
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        //game over sunshine!
+                        self.resetGame()
+                    }
+                }
             }
-            
             for s in silos {
-            if (s.checkHit(pos: (inv.spriteView?.frame)!)) {
-
-                //print("inv hit silo")
-            }
+                if let isv = inv.spriteView {
+                    if (s.checkHit(pos: isv.frame)) {
+                        //do nothing as invaders just wipe up the silo and thats in the checkhit function
+                    }
+                }
             }
         }
     }
@@ -408,6 +492,10 @@ class InvadersViewController: UIViewController {
         case .loading:
             break
         case .ending:
+            checkBullets()
+            checkInvaders()
+            moveInvaders()
+            checkMothership()
             break
         case .playing:
             moveBase()
@@ -428,9 +516,9 @@ class InvadersViewController: UIViewController {
         
         for inv in invaders {
             if inv.isDead {continue}
-            inv.move(x: invaderXSpeed, y: invaderYSpeed)
+            inv.move(x: model.invaderXSpeed, y: model.invaderYSpeed)
         }
-        if invaderYSpeed > 0 { invaderYSpeed = 0}
+        if model.invaderYSpeed > 0 { model.invaderYSpeed = 0}
     }
     
     @objc func leftPressed(gesture:UILongPressGestureRecognizer) {
@@ -438,9 +526,9 @@ class InvadersViewController: UIViewController {
             return
         }
         if gesture.state == .began {
-            leftMove = baseSpeed
+            model.leftMove = model.baseSpeed
         } else if gesture.state == .ended {
-            leftMove = 0
+            model.leftMove = 0
         }
         
     }
@@ -450,18 +538,16 @@ class InvadersViewController: UIViewController {
             return
         }
         if gesture.state == .began {
-            rightMove = baseSpeed
+            model.rightMove = model.baseSpeed
         } else if gesture.state == .ended {
-            rightMove = 0
+            model.rightMove = 0
         }
     }
     
-    
     @objc func fire(gesture:UITapGestureRecognizer) {
-        guard bulletFired == false && model.gameState != .starting else {
+        guard model.bulletFired == false && model.gameState != .starting else {
             return
         }
-        
         
         if #available(iOS 10.0, *) {
             let generator = UIImpactFeedbackGenerator(style: .light)
@@ -473,15 +559,19 @@ class InvadersViewController: UIViewController {
             model.gameState = .starting
             startGame()
         } else {
-            let basePos:CGPoint = (base?.spriteView?.center)!
-            bullet = Bullet(pos: basePos, height: 24, width: 8)
-            bullet?.position = basePos
-            self.view.addSubview(bullet!.spriteView!)
-            bulletFired = true
+            if let bsv = base?.spriteView {
+                bullet = Bullet(pos: bsv.center, height: 24, width: 8)
+                bullet?.position = bsv.center
+                self.view.addSubview(bullet!.spriteView!)
+                model.bulletFired = true
+            }
         }
     }
     
     func dropBomb(pos:CGPoint) {
+        guard model.gameState == .playing else {
+            return
+        }
         let bomb = Bomb(pos: pos, height: 24, width: 8)
         bomb.position = pos
         self.view.addSubview(bomb.spriteView!)
