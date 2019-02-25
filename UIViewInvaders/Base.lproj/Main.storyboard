@@ -57,8 +57,8 @@
                                     <constraint firstAttribute="height" constant="2" id="IWW-IQ-eT6"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L2c-a3-NQn">
-                                <rect key="frame" x="16" y="141" width="343" height="529"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L2c-a3-NQn">
+                                <rect key="frame" x="16" y="44" width="343" height="626"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iI9-aA-AbR">

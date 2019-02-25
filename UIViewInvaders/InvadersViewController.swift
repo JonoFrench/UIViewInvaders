@@ -474,14 +474,11 @@ class InvadersViewController: UIViewController {
     }
     
     fileprivate func checkBombs() {
-        for (index,bomb) in bombs.enumerated() {
+        for bomb in bombs {
             if bomb.isDying || bomb.isDead {continue}
             
             if bomb.position.y > baseLineY {
                 bomb.isDying = true
-                //                if index > bombs.count {
-                //                    bombs.remove(at: index)
-                //                }
                 continue
             }
             bomb.move(x: 0, y: model.bombSpeed)
@@ -489,9 +486,6 @@ class InvadersViewController: UIViewController {
                 if let b = base {
                     if b.checkHit(pos:bomb.position) {
                         bomb.isDying = true
-                        //                        if index > bombs.count {
-                        //                            bombs.remove(at: index)
-                        //                        }
                         model.gameState = .ending
                         self.model.baseHitSound()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
@@ -510,9 +504,6 @@ class InvadersViewController: UIViewController {
             for s in silos {
                 if (s.checkHit(pos:bomb.position)) {
                     bomb.isDying = true
-                    //                    if index < bombs.count {
-                    //                        bombs.remove(at: index)
-                    //                    }
                 }
             }
         }
