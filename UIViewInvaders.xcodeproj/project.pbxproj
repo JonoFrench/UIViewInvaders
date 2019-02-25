@@ -16,6 +16,11 @@
 		34D72272221C535100A46057 /* extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D72271221C535100A46057 /* extentions.swift */; };
 		34D72274221F0AAD00A46057 /* AlphaNumeric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D72273221F0AAD00A46057 /* AlphaNumeric.swift */; };
 		34D7227622204CE900A46057 /* InvadersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7227522204CE800A46057 /* InvadersModel.swift */; };
+		34D7227822242D9300A46057 /* shoot.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D7227722242D9200A46057 /* shoot.wav */; };
+		34D7227B22242EFE00A46057 /* invaderkilled.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D7227922242EFD00A46057 /* invaderkilled.wav */; };
+		34D7227C22242EFE00A46057 /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D7227A22242EFE00A46057 /* explosion.wav */; };
+		34D7227F2224301300A46057 /* ufo_highpitch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D7227E2224301300A46057 /* ufo_highpitch.wav */; };
+		34D722812224319A00A46057 /* fastinvader1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D722802224319900A46057 /* fastinvader1.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +35,11 @@
 		34D72271221C535100A46057 /* extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extentions.swift; sourceTree = "<group>"; };
 		34D72273221F0AAD00A46057 /* AlphaNumeric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaNumeric.swift; sourceTree = "<group>"; };
 		34D7227522204CE800A46057 /* InvadersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvadersModel.swift; sourceTree = "<group>"; };
+		34D7227722242D9200A46057 /* shoot.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = shoot.wav; sourceTree = "<group>"; };
+		34D7227922242EFD00A46057 /* invaderkilled.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = invaderkilled.wav; sourceTree = "<group>"; };
+		34D7227A22242EFE00A46057 /* explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion.wav; sourceTree = "<group>"; };
+		34D7227E2224301300A46057 /* ufo_highpitch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ufo_highpitch.wav; sourceTree = "<group>"; };
+		34D722802224319900A46057 /* fastinvader1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fastinvader1.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,18 +72,31 @@
 		34D7225C221ADEF200A46057 /* UIViewInvaders */ = {
 			isa = PBXGroup;
 			children = (
-				34D7225D221ADEF200A46057 /* AppDelegate.swift */,
-				34D7225F221ADEF200A46057 /* InvadersViewController.swift */,
 				34D72273221F0AAD00A46057 /* AlphaNumeric.swift */,
-				34D72261221ADEF200A46057 /* Main.storyboard */,
+				34D7225D221ADEF200A46057 /* AppDelegate.swift */,
 				34D72264221ADEF500A46057 /* Assets.xcassets */,
-				34D72266221ADEF500A46057 /* LaunchScreen.storyboard */,
-				34D72269221ADEF500A46057 /* Info.plist */,
-				34D7226F221ADF5400A46057 /* Sprite.swift */,
 				34D72271221C535100A46057 /* extentions.swift */,
+				34D72269221ADEF500A46057 /* Info.plist */,
 				34D7227522204CE800A46057 /* InvadersModel.swift */,
+				34D7225F221ADEF200A46057 /* InvadersViewController.swift */,
+				34D72266221ADEF500A46057 /* LaunchScreen.storyboard */,
+				34D72261221ADEF200A46057 /* Main.storyboard */,
+				34D7227D22242F0300A46057 /* Sounds */,
+				34D7226F221ADF5400A46057 /* Sprite.swift */,
 			);
 			path = UIViewInvaders;
+			sourceTree = "<group>";
+		};
+		34D7227D22242F0300A46057 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				34D722802224319900A46057 /* fastinvader1.wav */,
+				34D7227E2224301300A46057 /* ufo_highpitch.wav */,
+				34D7227722242D9200A46057 /* shoot.wav */,
+				34D7227A22242EFE00A46057 /* explosion.wav */,
+				34D7227922242EFD00A46057 /* invaderkilled.wav */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -134,8 +157,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34D7227C22242EFE00A46057 /* explosion.wav in Resources */,
+				34D7227B22242EFE00A46057 /* invaderkilled.wav in Resources */,
 				34D72268221ADEF500A46057 /* LaunchScreen.storyboard in Resources */,
 				34D72265221ADEF500A46057 /* Assets.xcassets in Resources */,
+				34D722812224319A00A46057 /* fastinvader1.wav in Resources */,
+				34D7227F2224301300A46057 /* ufo_highpitch.wav in Resources */,
+				34D7227822242D9300A46057 /* shoot.wav in Resources */,
 				34D72263221ADEF200A46057 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
