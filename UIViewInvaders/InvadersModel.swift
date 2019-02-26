@@ -10,8 +10,8 @@ import UIKit
 import AVFoundation
 
 enum GameState {
-    case loading
     case starting
+    case loading
     case playing
     case nextLevel
     case ending
@@ -23,7 +23,8 @@ final class InvadersModel {
     weak var viewController:InvadersViewController?
     var layoutSet: Bool = false
     var bulletFired: Bool = false
-    var gameState:GameState = .loading
+    var gameState:GameState = .starting
+    var bombRandomiser:Int = 1000
     
     var lives:Int = 3 {
         didSet{
@@ -43,6 +44,9 @@ final class InvadersModel {
             guard gameState != .loading else {
                 return
             }
+            bombRandomiser -= 10
+            if bombRandomiser < 100 { bombRandomiser = 100 }
+            
             if deadCount == numInvaders {
                 nextLevel()
             }
@@ -71,6 +75,7 @@ final class InvadersModel {
         self.score = 0
         self.level = 1
         self.numInvaders = 0
+        self.bombRandomiser = 1000
     }
     
     func nextLevel() {
@@ -83,83 +88,7 @@ final class InvadersModel {
         self.score += 1000
         self.level += 1
         self.numInvaders = 0
+        self.bombRandomiser = level < 5 ? 1000 - (level * 100) : 500
     }
     
-    //Audio Stuff
-    //Set up as much to start with and play sounds on a new thread
-    //You'll probably want to turn the sound off after a bit.....
-    
-    var hitAudioPlayer: AVAudioPlayer?
-    var shootAudioPlayer: AVAudioPlayer?
-    var motherAudioPlayer: AVAudioPlayer?
-    var baseAudioPlayer: AVAudioPlayer?
-    var invaderAudioPlayer: AVAudioPlayer?
-    
-    lazy var shooturl = Bundle.main.url(forResource: "shoot", withExtension: "wav")
-    lazy var killurl = Bundle.main.url(forResource: "invaderkilled", withExtension: "wav")
-    lazy var explosionurl = Bundle.main.url(forResource: "explosion", withExtension: "wav")
-    lazy var ufourl = Bundle.main.url(forResource: "ufo_highpitch", withExtension: "wav")
-    lazy var invurl = Bundle.main.url(forResource: "fastinvader1", withExtension: "wav")
-    
-    func setSounds() {
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-            shootAudioPlayer = try AVAudioPlayer(contentsOf: shooturl!, fileTypeHint: AVFileType.wav.rawValue)
-            hitAudioPlayer = try AVAudioPlayer(contentsOf: killurl!, fileTypeHint: AVFileType.wav.rawValue)
-            baseAudioPlayer = try AVAudioPlayer(contentsOf: explosionurl!, fileTypeHint: AVFileType.wav.rawValue)
-            motherAudioPlayer = try AVAudioPlayer(contentsOf: ufourl!, fileTypeHint: AVFileType.wav.rawValue)
-            invaderAudioPlayer = try AVAudioPlayer(contentsOf: invurl!, fileTypeHint: AVFileType.wav.rawValue)
-        } catch let error {
-            print(error.localizedDescription)
-        }
-    }
-    
-    func shootSound(){
-        Thread.detachNewThreadSelector(#selector(InvadersModel.playShootSound), toTarget: self, with: nil)
-    }
-    
-    @objc func playShootSound(){
-        guard let shootAudioPlayer = shootAudioPlayer else { return }
-        shootAudioPlayer.play()
-    }
-    
-    func hitSound() {
-        Thread.detachNewThreadSelector(#selector(InvadersModel.playHitSound), toTarget: self, with: nil)
-    }
-    
-    @objc func playHitSound(){
-        guard let hitAudioPlayer = hitAudioPlayer else { return }
-        hitAudioPlayer.play()
-    }
-    
-    func baseHitSound() {
-        Thread.detachNewThreadSelector(#selector(InvadersModel.playbaseHitSound), toTarget: self, with: nil)
-    }
-    
-    @objc func playbaseHitSound(){
-        guard let baseAudioPlayer = baseAudioPlayer else { return }
-        baseAudioPlayer.play()
-    }
-    
-    func motherSound()
-    {
-        Thread.detachNewThreadSelector(#selector(InvadersModel.playmotherSound), toTarget: self, with: nil)
-    }
-    
-    @objc func playmotherSound(){
-        guard let motherAudioPlayer = motherAudioPlayer else { return }
-        motherAudioPlayer.play()
-    }
-    
-    func invaderSound()
-    {
-        Thread.detachNewThreadSelector(#selector(InvadersModel.playinvaderSound), toTarget: self, with: nil)
-    }
-    
-    @objc func playinvaderSound(){
-        guard let invaderAudioPlayer = invaderAudioPlayer else { return }
-        invaderAudioPlayer.play()
-    }
 }

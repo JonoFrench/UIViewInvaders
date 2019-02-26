@@ -69,43 +69,6 @@ class Sprite {
         }
     }
     
-    
-    func startAnimating(){
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.animate()
-        }
-    }
-    
-    func animate() {
-        if isDying && !isDead {
-            UIViewInvaders.animateDying(coloursArray: animateArray,frame: currentFrame,pixels: viewArray)
-            UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
-                self.isDead = true
-                self.spriteView?.transform = CGAffineTransform(scaleX: 2.5, y: 2.5)
-                self.spriteView?.alpha = 0
-            }, completion: { (finished: Bool) in
-                self.spriteView?.removeFromSuperview()
-                self.isDying = false
-            })
-            startAnimating()
-        } else if isDying {
-            UIViewInvaders.animateDying(coloursArray: animateArray,frame: currentFrame,pixels: viewArray)
-            currentFrame += 1
-            if currentFrame == self.frames {
-                currentFrame = 0
-            }
-            startAnimating()
-        } else if !isDead && !isDying {
-            
-            UIViewInvaders.animate(coloursArray: animateArray,frame: currentFrame,pixels: viewArray)
-            currentFrame += 1
-            if currentFrame == self.frames {
-                currentFrame = 0
-            }
-            startAnimating()
-        }
-    }
-    
     func checkHit(pos:CGPoint) -> Bool {
         guard !isDead else {
             return false
@@ -148,6 +111,46 @@ class Sprite {
         position = newPos
     }
     
+}
+
+extension Sprite {
+    func startAnimating(){
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.animate()
+        }
+    }
+}
+
+extension Sprite {
+    func animate() {
+        if isDying && !isDead {
+            UIViewInvaders.animateDying(coloursArray: animateArray,frame: currentFrame,pixels: viewArray)
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
+                self.isDead = true
+                self.spriteView?.transform = CGAffineTransform(scaleX: 2.5, y: 2.5)
+                self.spriteView?.alpha = 0
+            }, completion: { (finished: Bool) in
+                self.spriteView?.removeFromSuperview()
+                self.isDying = false
+            })
+            startAnimating()
+        } else if isDying {
+            UIViewInvaders.animateDying(coloursArray: animateArray,frame: currentFrame,pixels: viewArray)
+            currentFrame += 1
+            if currentFrame == self.frames {
+                currentFrame = 0
+            }
+            startAnimating()
+        } else if !isDead && !isDying {
+            
+            UIViewInvaders.animate(coloursArray: animateArray,frame: currentFrame,pixels: viewArray)
+            currentFrame += 1
+            if currentFrame == self.frames {
+                currentFrame = 0
+            }
+            startAnimating()
+        }
+    }
 }
 
 
