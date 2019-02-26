@@ -48,8 +48,8 @@ let pixelArray:[[Int]] =
         1,2,2,1,1,2,2,1,
         1,1,2,2,2,2,2,1,
         0,1,1,1,1,2,2,1,
-        0,0,0,0,1,1,1,1,
-        0,0,0,0,0,1,1,1],
+        0,0,0,0,1,2,2,1,
+        0,0,0,0,1,1,1,1],
      [1,1,1,1,1,1,1,0, //5
         1,2,2,2,2,2,1,1,
         1,2,2,1,1,1,1,1,
@@ -266,14 +266,14 @@ let pixelArray:[[Int]] =
         1,1,2,2,2,2,1,1,
         0,1,1,2,2,1,1,1,
         0,0,0,1,1,1,1,0],
-     [1,1,1,0,0,1,1,1, //W
-        1,2,1,1,1,1,2,1,
-        1,2,1,2,2,1,2,1,
-        1,2,1,2,2,1,2,1,
-        1,2,1,2,2,1,2,1,
-        1,2,2,2,2,2,2,1,
-        1,1,2,1,1,2,1,1,
-        0,1,1,1,1,1,1,1],
+     [1,1,0,0,0,1,1,1, //W
+        2,1,1,1,1,1,2,1,
+        2,2,1,2,1,2,2,1,
+        2,2,1,2,1,2,2,1,
+        2,2,1,2,1,2,2,1,
+        2,2,2,2,2,2,2,1,
+        1,1,2,1,2,1,1,1,
+        0,1,1,1,1,1,1,0],
      [1,1,1,1,1,1,1,1, //X
         1,2,2,1,1,2,2,1,
         1,2,2,1,1,2,2,1,
@@ -362,79 +362,73 @@ struct AlphaNumeric {
         }
         return StringView()
     }
+    //Returns a UIView containing a string.
     
     func get(string:String,size:CGSize,fcol:UIColor,bcol:UIColor) -> UIView {
         var constraintsArray:[NSLayoutConstraint] = []
         var charViewArray:[UIView] = []
         let stringView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: size))
-        //stringView.translatesAutoresizingMaskIntoConstraints = false
         let charWidth:CGFloat = size.width / CGFloat(string.count)
-        print("getting string \(string) width \(size.width) charw \(charWidth)")
         for (index, item) in string.uppercased().enumerated() {
             let v = getChar(char: item, size: CGSize(width: charWidth, height: size.height), position: CGPoint(x:CGFloat(index) * charWidth , y: 0),fcol: fcol, bcol: bcol)
-            //v.translatesAutoresizingMaskIntoConstraints = false
-            charViewArray.append(v)
-            stringView.addSubview(v)
-            constraintsArray.append(heightConstraint(v,stringView,Int(size.height)))
-            constraintsArray.append(widthConstraint(v,stringView,Int(charWidth)))
+            v.translatesAutoresizingMaskIntoConstraints = false
             if index == 0 {
                 constraintsArray.append(leftConstraint(v,stringView))
             }
             else if index == string.count - 1
             {
                 constraintsArray.append(rightConstraint(v,stringView))
-                constraintsArray.append(leftConstraint(v,charViewArray[index - 1]))
+                constraintsArray.append(leftPixelConstraint(v,charViewArray[index - 1]))
             } else {
-                constraintsArray.append(leftConstraint(v,charViewArray[index - 1]))
+                constraintsArray.append(leftPixelConstraint(v,charViewArray[index - 1]))
             }
             
             constraintsArray.append(topConstraint(v,stringView))
             constraintsArray.append(bottomConstraint(v,stringView))
-            
+            charViewArray.append(v)
+            stringView.addSubview(v)
+
         }
-        //NSLayoutConstraint.activate(constraintsArray)
-        stringView.sizeToFit()
-        stringView.layoutIfNeeded()
+        NSLayoutConstraint.activate(constraintsArray)
         return stringView
     }
+    // Returns a uiview containing a string and an array of views that make up the string
+    // We can use this array to change the values of the background colours to change the
+    // text without having to recreate the whole thing from scratch.
     
     func getStringView(string:String,size:CGSize,fcol:UIColor,bcol:UIColor) -> StringViewArray {
+        var tempView:[UIView]=[]
         var sv:StringView = StringView()
         var sva:StringViewArray = StringViewArray()
         var constraintsArray:[NSLayoutConstraint] = []
         sv.charView = UIView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: size))
-        //stringView.translatesAutoresizingMaskIntoConstraints = false
         let charWidth:CGFloat = size.width / CGFloat(string.count)
-        print("getting string view \(string) width \(size.width) charw \(charWidth)")
         sva.charViewArray.removeAll()
         for (index, item) in string.uppercased().enumerated() {
             let v = getCharAndArray(char: item, size: CGSize(width: charWidth, height: size.height), position: CGPoint(x:CGFloat(index) * charWidth , y: 0),fcol: fcol, bcol: bcol)
-            //v.translatesAutoresizingMaskIntoConstraints = false
-            sva.charViewArray.append(v.charViewArray)
-            sv.charView?.addSubview(v.charView!)
-            constraintsArray.append(heightConstraint(v.charView!,sv.charView!,Int(size.height)))
-            constraintsArray.append(widthConstraint(v.charView!,sv.charView!,Int(charWidth)))
+            v.charView?.translatesAutoresizingMaskIntoConstraints = false
             if index == 0 {
                 constraintsArray.append(leftConstraint(v.charView!,sv.charView!))
             }
             else if index == string.count - 1
             {
                 constraintsArray.append(rightConstraint(v.charView!,sv.charView!))
-               // constraintsArray.append(leftConstraint(v,sv.charViewArray[index - 1]))
+                constraintsArray.append(leftPixelConstraint(v.charView!,tempView[index - 1]))
             } else {
-              //  constraintsArray.append(leftConstraint(v,sv.charViewArray[index - 1]))
+                constraintsArray.append(leftPixelConstraint(v.charView!,tempView[index - 1]))
             }
-            
             constraintsArray.append(topConstraint(v.charView!,sv.charView!))
             constraintsArray.append(bottomConstraint(v.charView!,sv.charView!))
-            
+            sva.charViewArray.append(v.charViewArray)
+            tempView.append(v.charView!)
+            sv.charView?.addSubview(v.charView!)
         }
-        //NSLayoutConstraint.activate(constraintsArray)
-        sv.charView!.sizeToFit()
-        sv.charView!.layoutIfNeeded()
+        NSLayoutConstraint.activate(constraintsArray)
         sva.charView = sv.charView
         return sva
     }
+    
+    // update an array of uiview to the new chracter
     
     func updateChar(char:Character,viewArray:[UIView],fcol:UIColor,bcol:UIColor) {
         let charPos = charDict[char]

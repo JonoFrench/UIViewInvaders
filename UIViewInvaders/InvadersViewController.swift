@@ -54,22 +54,19 @@ class InvadersViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
         self.view.bringSubviewToFront(coverView!)
         let displayLink:CADisplayLink = CADisplayLink(target: self, selector: #selector(refreshDisplay))
         displayLink.add(to: .main, forMode:.common)
-        
     }
     
     override func viewDidLayoutSubviews() {
         super .viewDidLayoutSubviews()
-        if !model.layoutSet {
+        if !model.layoutSet { // only want to do this once.
             model.layoutSet = true
             baseLineY = ((baseLine?.center.y)!) - 15
             viewWidth = self.view.frame.width
             viewHeight = self.view.frame.height
             setStars()
-            // setSilos()
             setIntro()
         }
     }
@@ -102,7 +99,7 @@ class InvadersViewController: UIViewController {
         if let introView = introView, let coverView = coverView {
             let w = coverView.frame.width
             let h = coverView.frame.height
-            coverView.backgroundColor = UIColor.black.withAlphaComponent(0.50)
+            coverView.backgroundColor = UIColor.black.withAlphaComponent(0.10)
             coverView.addSubview(introView)
             introView.backgroundColor = .clear
             let alpha:AlphaNumeric = AlphaNumeric()
@@ -112,7 +109,7 @@ class InvadersViewController: UIViewController {
             title.backgroundColor = .clear
             introView.addSubview(title)
             
-            let subTitle = UIView(frame: CGRect(x: 0, y: 140, width: w, height: 60))
+            let subTitle = UIView(frame: CGRect(x: 0, y: 130, width: w, height: 60))
             subTitle.addSubview(alpha.get(string: "INVADERS", size: (subTitle.frame.size), fcol: .green, bcol:.red ))
             subTitle.backgroundColor = .clear
             introView.addSubview(subTitle)
@@ -139,7 +136,6 @@ class InvadersViewController: UIViewController {
         }
         let alpha:AlphaNumeric = AlphaNumeric()
         gameoverView = UIView(frame: CGRect(x: 0, y: viewHeight / 2, width: (coverView?.frame.width)!, height: 40))
-        //gameoverView?.translatesAutoresizingMaskIntoConstraints = false
         let gov = UIView(frame: CGRect(x: 0, y: 0, width: (gameoverView?.frame.width)!, height: (gameoverView?.frame.height)!))
         gov.addSubview(alpha.get(string: "GAME OVER", size: (gov.frame.size), fcol: .red, bcol:.yellow ))
         gov.backgroundColor = .clear
@@ -164,9 +160,7 @@ class InvadersViewController: UIViewController {
     }
     
     fileprivate func resetGame() {
-        
         setGameOverView()
-        
         for i in invaders {
             if let isv = i.spriteView {
                 isv.removeFromSuperview()
@@ -180,7 +174,6 @@ class InvadersViewController: UIViewController {
             }
         }
         silos.removeAll()
-        //setSilos()
         
         for b in bombs {
             if let bsv = b.spriteView {
@@ -240,7 +233,7 @@ class InvadersViewController: UIViewController {
         })
     }
     
-    func setScore() {
+    fileprivate func setScore() {
         let scoreString = String(format: "%06d", model.score)
         let alpha:AlphaNumeric = AlphaNumeric()
         scoreView = alpha.getStringView(string: scoreString, size: (scoreBox?.frame.size)!, fcol: .white, bcol: .red)
@@ -328,7 +321,6 @@ class InvadersViewController: UIViewController {
     fileprivate func setIntroInvaders() {
         
         let step = viewWidth / 6
-        
         for i in stride(from: step, to: step * 6, by: step) {
             for z in stride(from: 300, to: 600, by: 60){
                 let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: 40, width: 40)
@@ -399,13 +391,11 @@ class InvadersViewController: UIViewController {
         }
     }
     
-    
     fileprivate func checkMothership()
     {
         let yPos = (scoreBox?.center.y)! + 30
-        
         if motherShip == nil {
-            
+            // random add a new mothership
             if Int.random(in: 0...300) == 1 {
                 motherShip = MotherShip(pos: CGPoint(x: self.view.frame.width + 10, y: yPos), height: 30, width: 45)
                 self.view.addSubview(motherShip!.spriteView!)
@@ -607,6 +597,14 @@ class InvadersViewController: UIViewController {
             }
         }
     }
+
+    func moveInvaders() {
+        for inv in invaders {
+            if inv.isDead {continue}
+            inv.move(x: model.invaderXSpeed, y: model.invaderYSpeed)
+        }
+        if model.invaderYSpeed > 0 { model.invaderYSpeed = 0}
+    }
     
     @objc func refreshDisplay() {
         
@@ -644,14 +642,6 @@ class InvadersViewController: UIViewController {
         case .hiScore:
             break
         }
-    }
-    
-    func moveInvaders() {
-        for inv in invaders {
-            if inv.isDead {continue}
-            inv.move(x: model.invaderXSpeed, y: model.invaderYSpeed)
-        }
-        if model.invaderYSpeed > 0 { model.invaderYSpeed = 0}
     }
     
     @objc func leftPressed(gesture:UILongPressGestureRecognizer) {
