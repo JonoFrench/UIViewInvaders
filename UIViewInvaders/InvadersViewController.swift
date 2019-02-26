@@ -548,6 +548,12 @@ class InvadersViewController: UIViewController {
             if inv.isDead {continue}
             if Int.random(in: 0...model.bombRandomiser) == 1 && model.gameState == .playing {
                 dropBomb(pos: inv.position)
+                UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
+                    inv.spriteView!.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+                }, completion: nil)
+                UIView.animate(withDuration: 0.5, delay: 0.25, options: [], animations: {
+                    inv.spriteView!.transform = CGAffineTransform(rotationAngle: CGFloat.pi * 2)
+                }, completion: nil)
             }
             // use the amount of dead invaders to increase the speed of the remaining
             // so the game gets harder.
@@ -681,7 +687,7 @@ class InvadersViewController: UIViewController {
         if model.gameState == .starting || model.gameState == .gameOver {
             model.gameState = .loading
             startGame()
-        } else {
+        } else if model.gameState != .ending {
             if let bsv = base?.spriteView {
                 bullet = Bullet(pos: bsv.center, height: 24, width: 8)
                 bullet?.position = bsv.center
