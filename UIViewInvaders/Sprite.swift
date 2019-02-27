@@ -8,7 +8,7 @@
 
 import UIKit
 
-let colors:[UIColor] = [.clear,.white,.red,.blue,.green,.yellow,.magenta,.cyan,.orange,.brown]
+let colors:[UIColor] = [.clear,.white,.red,.blue,.green,.yellow,.magenta,.cyan,.orange,.brown,.lightGray]
 let deadColors:[UIColor] = [.red,.orange,.yellow]
 
 protocol Animates {
@@ -256,10 +256,11 @@ class Bomb: Sprite {
 class Silo: Sprite {
     
     let siloColours =
-        [0,0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,0,
-         0,0,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,0,0,
-         0,0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,0,
-         0,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,0,
+        [0,0,0,0,5,5,5,5,5,5,5,5,5,5,5,5,0,0,0,0,
+         0,0,0,5,4,4,4,4,4,4,4,4,4,4,4,4,5,0,0,0,
+         0,0,5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,0,0,
+         0,5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,0,
+         5,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,
          4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
          4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
          4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
@@ -269,9 +270,8 @@ class Silo: Sprite {
          4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
          4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
          4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
-         4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
-         4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
-         4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]
+         3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,
+         3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]
     
     init(pos:CGPoint,height:Int,width:Int) {
         super.init(pos: pos, height: height, width: width, coloursArray: siloColours,frameWith:20,frameHeight:16,frames:1)
@@ -349,25 +349,19 @@ class MotherShip: Sprite, Animates {
     let motherAnimations =
         [[0,0,0,0,0,1,1,0,0,0,0,0,
           0,0,0,7,7,7,7,7,7,0,0,0,
-          0,1,1,1,1,1,1,1,1,1,1,0,
-          1,5,1,5,1,1,5,1,1,5,1,1,
-          0,1,1,1,1,1,1,1,1,1,1,0,
-          0,0,0,0,0,1,1,0,0,0,0,0],
-         [0,0,0,0,0,9,9,0,0,0,0,0,
+          0,4,4,4,4,4,4,4,4,4,4,0,
+          4,2,4,2,4,2,4,2,4,2,4,2,
+          0,4,4,4,4,4,4,4,4,4,4,0,
+          0,0,0,0,4,4,4,4,0,0,0,0],
+         [0,0,0,0,0,8,8,0,0,0,0,0,
           0,0,0,7,7,7,7,7,7,0,0,0,
-          0,1,1,1,1,1,1,1,1,1,1,0,
-          1,1,5,1,5,1,1,5,1,1,5,1,
-          0,1,1,1,1,1,1,1,1,1,1,0,
-          0,0,0,0,0,1,1,0,0,0,0,0],
-         [0,0,0,0,0,1,1,0,0,0,0,0,
-          0,0,0,7,7,7,7,7,7,0,0,0,
-          0,1,1,1,1,1,1,1,1,1,1,0,
-          1,5,1,5,1,1,5,1,1,5,1,1,
-          0,1,1,1,1,1,1,1,1,1,1,0,
-          0,0,0,0,0,1,1,0,0,0,0,0]]
+          0,4,4,4,4,4,4,4,4,4,4,0,
+          2,4,2,4,2,4,2,4,2,4,2,4,
+          0,4,4,4,4,4,4,4,4,4,4,0,
+          0,0,0,0,4,4,4,4,0,0,0,0]]
     
     init(pos:CGPoint,height:Int,width:Int) {
-        super.init(pos: pos, height: height, width: width, animateArray: motherAnimations,frameWith:12,frameHeight:6,frames:3)
+        super.init(pos: pos, height: height, width: width, animateArray: motherAnimations,frameWith:12,frameHeight:6,frames:2)
     }
 }
 
@@ -436,7 +430,6 @@ let layoutSprite = {(pixWidth:Int,pixHeight:Int,coloursArray:[Int],spriteView:UI
         
     }
     NSLayoutConstraint.activate(constraintsArray)
-    spriteView.sizeToFit()
     return viewArray
 }
 

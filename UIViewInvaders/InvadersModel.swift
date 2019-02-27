@@ -65,6 +65,7 @@ final class InvadersModel {
     var bombSpeed:Int = 4
     var numInvaders:Int = 0
     
+    // reset the game
     func reset() {
         self.gameState = .loading
         self.invaderXSpeed = 2
@@ -77,7 +78,8 @@ final class InvadersModel {
         self.numInvaders = 0
         self.bombRandomiser = 1000
     }
-    
+    // set up model for next level
+    // after level 5 it stays the same.
     func nextLevel() {
         self.gameState = .nextLevel
         self.invaderXSpeed = 2

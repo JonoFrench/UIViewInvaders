@@ -124,10 +124,42 @@ class InvadersViewController: UIViewController {
             subTitle3.backgroundColor = .clear
             introView.addSubview(subTitle3)
             introView.layoutIfNeeded()
-            
         }
         setIntroInvaders()
         self.view.bringSubviewToFront(coverView!)
+    }
+    
+    fileprivate func setIntroInvaders() {
+        let step = viewWidth / 6
+        for i in stride(from: step, to: step * 6, by: step) {
+            for z in stride(from: 300, to: 600, by: 60){
+                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: 40, width: 40)
+                invader.spriteView?.alpha = 0
+                invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                self.view.addSubview(invader.spriteView!)
+                invaders.append(invader)
+                invader.animate()
+                UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
+                    invader.spriteView?.transform = CGAffineTransform(scaleX: 1, y: 1)
+                    invader.spriteView?.alpha = 1
+                    invader.spriteView?.center = CGPoint(x: i, y: CGFloat(z))
+                    invader.position = CGPoint(x: i, y: CGFloat(z))
+                }, completion: { (finished: Bool) in
+                })
+            }
+        }
+    }
+    
+    fileprivate func removeIntroInvaders(){
+        for invader in invaders {
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
+                invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                invader.spriteView?.alpha = 1
+                invader.spriteView?.center = CGPoint(x: self.viewWidth / 2, y: 20)
+            }, completion: { (finished: Bool) in
+                invader.spriteView?.removeFromSuperview()
+            })
+        }
     }
     
     fileprivate func setGameOverView(){
@@ -136,29 +168,32 @@ class InvadersViewController: UIViewController {
         }
         let alpha:AlphaNumeric = AlphaNumeric()
         gameoverView = UIView(frame: CGRect(x: 0, y: viewHeight / 2, width: (coverView?.frame.width)!, height: 40))
-        let gov = UIView(frame: CGRect(x: 0, y: 0, width: (gameoverView?.frame.width)!, height: (gameoverView?.frame.height)!))
-        gov.addSubview(alpha.get(string: "GAME OVER", size: (gov.frame.size), fcol: .red, bcol:.yellow ))
-        gov.backgroundColor = .clear
-        gameoverView!.alpha = 0
-        gameoverView!.addSubview(gov)
-        gameoverView!.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
-        self.view.addSubview(gameoverView!)
-        UIView.animate(withDuration: 0.5, delay: 0.25, options: [], animations: {
-            self.gameoverView!.transform = CGAffineTransform(scaleX: 1.0, y: 1.0).rotated(by: 0)
-            self.gameoverView!.alpha = 1
-        }, completion: { (finished: Bool) in
-            UIView.animate(withDuration: 0.5, delay: 3.0, options: [], animations: {
-                self.gameoverView!.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
-                self.gameoverView!.alpha = 0
+        if let gameoverView = gameoverView {
+            let gov = UIView(frame: CGRect(x: 0, y: 0, width: gameoverView.frame.width, height: gameoverView.frame.height))
+            gov.addSubview(alpha.get(string: "GAME OVER", size: (gov.frame.size), fcol: .red, bcol:.yellow ))
+            gov.backgroundColor = .clear
+            gameoverView.alpha = 0
+            gameoverView.addSubview(gov)
+            gameoverView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
+            self.view.addSubview(gameoverView)
+            UIView.animate(withDuration: 0.5, delay: 0.25, options: [], animations: {
+                gameoverView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0).rotated(by: 0)
+                gameoverView.alpha = 1
             }, completion: { (finished: Bool) in
-                self.coverView!.alpha = 1
-                self.model.gameState = .starting
-                self.gameoverView!.removeFromSuperview()
-                self.setIntro()
-            })            
-        })
+                UIView.animate(withDuration: 0.5, delay: 3.0, options: [], animations: {
+                    gameoverView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
+                    gameoverView.alpha = 0
+                }, completion: { (finished: Bool) in
+                    self.coverView?.alpha = 1
+                    self.model.gameState = .starting
+                    gameoverView.removeFromSuperview()
+                    self.setIntro()
+                })
+            })
+        }
     }
     
+    // reset the UI
     fileprivate func resetGame() {
         setGameOverView()
         for i in invaders {
@@ -221,7 +256,6 @@ class InvadersViewController: UIViewController {
     
     fileprivate func startGame() {
         self.removeIntroInvaders()
-        
         UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
             self.coverView!.alpha = 0
         }, completion: { (finished: Bool) in
@@ -318,39 +352,6 @@ class InvadersViewController: UIViewController {
         }
     }
     
-    fileprivate func setIntroInvaders() {
-        
-        let step = viewWidth / 6
-        for i in stride(from: step, to: step * 6, by: step) {
-            for z in stride(from: 300, to: 600, by: 60){
-                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: 40, width: 40)
-                invader.spriteView?.alpha = 0
-                invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                self.view.addSubview(invader.spriteView!)
-                invaders.append(invader)
-                invader.animate()
-                UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
-                    invader.spriteView?.transform = CGAffineTransform(scaleX: 1, y: 1)
-                    invader.spriteView?.alpha = 1
-                    invader.spriteView?.center = CGPoint(x: i, y: CGFloat(z))
-                    invader.position = CGPoint(x: i, y: CGFloat(z))
-                }, completion: { (finished: Bool) in
-                })
-            }
-        }
-    }
-    
-    fileprivate func removeIntroInvaders(){
-        for invader in invaders {
-            UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
-                invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                invader.spriteView?.alpha = 1
-                invader.spriteView?.center = CGPoint(x: self.viewWidth / 2, y: 20)
-            }, completion: { (finished: Bool) in
-                invader.spriteView?.removeFromSuperview()
-            })
-        }
-    }
     
     fileprivate func setInvaders() {
         invaders.removeAll()
@@ -603,7 +604,7 @@ class InvadersViewController: UIViewController {
             }
         }
     }
-
+    
     func moveInvaders() {
         for inv in invaders {
             if inv.isDead {continue}
@@ -611,6 +612,20 @@ class InvadersViewController: UIViewController {
         }
         if model.invaderYSpeed > 0 { model.invaderYSpeed = 0}
     }
+    
+    
+    func dropBomb(pos:CGPoint) {
+        guard model.gameState == .playing else {
+            return
+        }
+        let bomb = Bomb(pos: pos, height: 24, width: 8)
+        bomb.position = pos
+        self.view.addSubview(bomb.spriteView!)
+        bombs.append(bomb)
+        bomb.startAnimating()
+    }
+    
+    // refreshDisplay is called from the runloop and should be called every screen refresh cycle
     
     @objc func refreshDisplay() {
         
@@ -681,7 +696,6 @@ class InvadersViewController: UIViewController {
         if #available(iOS 10.0, *) {
             let generator = UIImpactFeedbackGenerator(style: .light)
             generator.impactOccurred()
-            
         }
         
         if model.gameState == .starting || model.gameState == .gameOver {
@@ -696,17 +710,6 @@ class InvadersViewController: UIViewController {
                 soundFX.shootSound()
             }
         }
-    }
-    
-    func dropBomb(pos:CGPoint) {
-        guard model.gameState == .playing else {
-            return
-        }
-        let bomb = Bomb(pos: pos, height: 24, width: 8)
-        bomb.position = pos
-        self.view.addSubview(bomb.spriteView!)
-        bombs.append(bomb)
-        bomb.startAnimating()
     }
     
 }
