@@ -7,14 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3481DC2023D8884700FA7FF6 /* UIHighScores.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34BC998123D85FFF0024A1BA /* UIHighScores.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3481DC2523D8890000FA7FF6 /* UIAlphaNumeric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3403BCA523D7562E00C29047 /* UIAlphaNumeric.framework */; };
+		3481DC2623D8890700FA7FF6 /* UIHighScores.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BC998123D85FFF0024A1BA /* UIHighScores.framework */; };
+		3481DC3423D89B0F00FA7FF6 /* UISprites.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3481DC1C23D887E700FA7FF6 /* UISprites.framework */; };
+		3481DC3523D89B7300FA7FF6 /* UIAlphaNumeric.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3403BCA523D7562E00C29047 /* UIAlphaNumeric.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3481DC3723D89BDD00FA7FF6 /* UISprites.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3481DC1C23D887E700FA7FF6 /* UISprites.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		34BC994623D760E30024A1BA /* Sprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BC994523D760E30024A1BA /* Sprite.swift */; };
 		34D7225E221ADEF200A46057 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7225D221ADEF200A46057 /* AppDelegate.swift */; };
 		34D72260221ADEF200A46057 /* InvadersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7225F221ADEF200A46057 /* InvadersViewController.swift */; };
 		34D72263221ADEF200A46057 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34D72261221ADEF200A46057 /* Main.storyboard */; };
 		34D72265221ADEF500A46057 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 34D72264221ADEF500A46057 /* Assets.xcassets */; };
 		34D72268221ADEF500A46057 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34D72266221ADEF500A46057 /* LaunchScreen.storyboard */; };
-		34D72270221ADF5400A46057 /* Sprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7226F221ADF5400A46057 /* Sprite.swift */; };
 		34D72272221C535100A46057 /* extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D72271221C535100A46057 /* extentions.swift */; };
-		34D72274221F0AAD00A46057 /* AlphaNumeric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D72273221F0AAD00A46057 /* AlphaNumeric.swift */; };
 		34D7227622204CE900A46057 /* InvadersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7227522204CE800A46057 /* InvadersModel.swift */; };
 		34D7227822242D9300A46057 /* shoot.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D7227722242D9200A46057 /* shoot.wav */; };
 		34D7227B22242EFE00A46057 /* invaderkilled.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D7227922242EFD00A46057 /* invaderkilled.wav */; };
@@ -24,7 +29,44 @@
 		34D72283222558AB00A46057 /* SoundFX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D72282222558AB00A46057 /* SoundFX.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3403BCA423D7562E00C29047 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 348F9F9023D7230A0007FC65;
+			remoteInfo = UIAlphaNumeric;
+		};
+		34BC998023D85FFF0024A1BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 34BC995423D854360024A1BA;
+			remoteInfo = UIHighScores;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		34BC998423D872B10024A1BA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				3481DC3723D89BDD00FA7FF6 /* UISprites.framework in CopyFiles */,
+				3481DC3523D89B7300FA7FF6 /* UIAlphaNumeric.framework in CopyFiles */,
+				3481DC2023D8884700FA7FF6 /* UIHighScores.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIAlphaNumeric.xcodeproj; path = ../UIAlphaNumeric/UIAlphaNumeric.xcodeproj; sourceTree = "<group>"; };
+		3481DC1C23D887E700FA7FF6 /* UISprites.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UISprites.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3481DC2923D88C5500FA7FF6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		34BC994523D760E30024A1BA /* Sprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprite.swift; sourceTree = "<group>"; };
+		34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIHighScores.xcodeproj; path = ../UIHighScores/UIHighScores.xcodeproj; sourceTree = "<group>"; };
 		34D7225A221ADEF200A46057 /* UIViewInvaders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIViewInvaders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D7225D221ADEF200A46057 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34D7225F221ADEF200A46057 /* InvadersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvadersViewController.swift; sourceTree = "<group>"; };
@@ -32,9 +74,7 @@
 		34D72264221ADEF500A46057 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		34D72267221ADEF500A46057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		34D72269221ADEF500A46057 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		34D7226F221ADF5400A46057 /* Sprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sprite.swift; sourceTree = "<group>"; };
 		34D72271221C535100A46057 /* extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extentions.swift; sourceTree = "<group>"; };
-		34D72273221F0AAD00A46057 /* AlphaNumeric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaNumeric.swift; sourceTree = "<group>"; };
 		34D7227522204CE800A46057 /* InvadersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvadersModel.swift; sourceTree = "<group>"; };
 		34D7227722242D9200A46057 /* shoot.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = shoot.wav; sourceTree = "<group>"; };
 		34D7227922242EFD00A46057 /* invaderkilled.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = invaderkilled.wav; sourceTree = "<group>"; };
@@ -49,17 +89,56 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3481DC3423D89B0F00FA7FF6 /* UISprites.framework in Frameworks */,
+				3481DC2523D8890000FA7FF6 /* UIAlphaNumeric.framework in Frameworks */,
+				3481DC2623D8890700FA7FF6 /* UIHighScores.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3403BCA023D7562E00C29047 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3403BCA523D7562E00C29047 /* UIAlphaNumeric.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3403BCA623D756A400C29047 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3481DC2923D88C5500FA7FF6 /* Foundation.framework */,
+				3481DC1C23D887E700FA7FF6 /* UISprites.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		34BC994723D7650A0024A1BA /* Sprites */ = {
+			isa = PBXGroup;
+			children = (
+				34BC994523D760E30024A1BA /* Sprite.swift */,
+			);
+			path = Sprites;
+			sourceTree = "<group>";
+		};
+		34BC997B23D85FFF0024A1BA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				34BC998123D85FFF0024A1BA /* UIHighScores.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		34D72251221ADEF200A46057 = {
 			isa = PBXGroup;
 			children = (
+				34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */,
+				3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */,
 				34D7225C221ADEF200A46057 /* UIViewInvaders */,
 				34D7225B221ADEF200A46057 /* Products */,
+				3403BCA623D756A400C29047 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,7 +153,7 @@
 		34D7225C221ADEF200A46057 /* UIViewInvaders */ = {
 			isa = PBXGroup;
 			children = (
-				34D72273221F0AAD00A46057 /* AlphaNumeric.swift */,
+				34BC994723D7650A0024A1BA /* Sprites */,
 				34D7225D221ADEF200A46057 /* AppDelegate.swift */,
 				34D72264221ADEF500A46057 /* Assets.xcassets */,
 				34D72271221C535100A46057 /* extentions.swift */,
@@ -84,7 +163,6 @@
 				34D72266221ADEF500A46057 /* LaunchScreen.storyboard */,
 				34D72261221ADEF200A46057 /* Main.storyboard */,
 				34D7227D22242F0300A46057 /* Sounds */,
-				34D7226F221ADF5400A46057 /* Sprite.swift */,
 				34D72282222558AB00A46057 /* SoundFX.swift */,
 			);
 			path = UIViewInvaders;
@@ -109,6 +187,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 34D7226C221ADEF500A46057 /* Build configuration list for PBXNativeTarget "UIViewInvaders" */;
 			buildPhases = (
+				34BC998423D872B10024A1BA /* CopyFiles */,
 				34D72256221ADEF200A46057 /* Sources */,
 				34D72257221ADEF200A46057 /* Frameworks */,
 				34D72258221ADEF200A46057 /* Resources */,
@@ -148,12 +227,39 @@
 			mainGroup = 34D72251221ADEF200A46057;
 			productRefGroup = 34D7225B221ADEF200A46057 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3403BCA023D7562E00C29047 /* Products */;
+					ProjectRef = 3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */;
+				},
+				{
+					ProductGroup = 34BC997B23D85FFF0024A1BA /* Products */;
+					ProjectRef = 34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				34D72259221ADEF200A46057 /* UIViewInvaders */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3403BCA523D7562E00C29047 /* UIAlphaNumeric.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UIAlphaNumeric.framework;
+			remoteRef = 3403BCA423D7562E00C29047 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		34BC998123D85FFF0024A1BA /* UIHighScores.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UIHighScores.framework;
+			remoteRef = 34BC998023D85FFF0024A1BA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		34D72258221ADEF200A46057 /* Resources */ = {
@@ -178,11 +284,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34BC994623D760E30024A1BA /* Sprite.swift in Sources */,
 				34D72272221C535100A46057 /* extentions.swift in Sources */,
 				34D7227622204CE900A46057 /* InvadersModel.swift in Sources */,
 				34D72260221ADEF200A46057 /* InvadersViewController.swift in Sources */,
-				34D72274221F0AAD00A46057 /* AlphaNumeric.swift in Sources */,
-				34D72270221ADF5400A46057 /* Sprite.swift in Sources */,
 				34D7225E221ADEF200A46057 /* AppDelegate.swift in Sources */,
 				34D72283222558AB00A46057 /* SoundFX.swift in Sources */,
 			);
@@ -329,9 +434,15 @@
 		34D7226D221ADEF500A46057 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9GZ8FVR7LN;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = UIViewInvaders/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -348,9 +459,15 @@
 		34D7226E221ADEF500A46057 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 9GZ8FVR7LN;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = UIViewInvaders/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (

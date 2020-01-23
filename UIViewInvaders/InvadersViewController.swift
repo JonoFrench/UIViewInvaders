@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import UIAlphaNumeric
+import UISprites
+import UIHighScores
 
-class InvadersViewController: UIViewController {
+class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     
     @IBOutlet weak var leftButton: UIView?
     @IBOutlet weak var rightButton: UIView?
@@ -36,6 +39,7 @@ class InvadersViewController: UIViewController {
     var silos:[Silo] = []
     var soundFX:SoundFX = SoundFX()
     var scoreView:StringViewArray = StringViewArray()
+    var highScore:UIHighScores?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +50,6 @@ class InvadersViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setControls()
         setScore()
         setLevel()
         setLives()
@@ -66,6 +69,7 @@ class InvadersViewController: UIViewController {
             baseLineY = ((baseLine?.center.y)!) - 15
             viewWidth = self.view.frame.width
             viewHeight = self.view.frame.height
+            setControls()
             setStars()
             setIntro()
         }
@@ -76,18 +80,43 @@ class InvadersViewController: UIViewController {
         let leftButtonGesture = UILongPressGestureRecognizer(target: self, action: #selector(leftPressed))
         leftButtonGesture.minimumPressDuration = 0
         leftButtonGesture.allowableMovement = 0
+        leftButtonGesture.delegate = self
         leftButton?.addGestureRecognizer(leftButtonGesture)
         
         let rightButtonGesture = UILongPressGestureRecognizer(target: self, action: #selector(rightPressed))
         rightButtonGesture.minimumPressDuration = 0
         rightButtonGesture.allowableMovement = 0
+        rightButtonGesture.delegate = self
         rightButton?.addGestureRecognizer(rightButtonGesture)
+        
+        let leftButtonTap = UITapGestureRecognizer(target: self, action: #selector(leftTapped))
+        leftButtonTap.delegate = self
+        leftButton?.addGestureRecognizer(leftButtonTap)
+        
+        let rightButtonTap = UITapGestureRecognizer(target: self, action: #selector(rightTapped))
+        rightButtonTap.delegate = self
+        rightButton?.addGestureRecognizer(rightButtonTap)
+        
+        
         
         let fireGesture = UITapGestureRecognizer(target: self, action: #selector(fire))
         fireGesture.numberOfTapsRequired = 1
         fireButton?.addGestureRecognizer(fireGesture)
         
         //Set the control layers
+        leftButton?.clipsToBounds = true
+        rightButton?.clipsToBounds = true
+        leftButton?.layer.masksToBounds = true
+        rightButton?.layer.masksToBounds = true
+        leftButton?.layer.shouldRasterize = true
+        rightButton?.layer.shouldRasterize = true
+        
+        fireButton?.layer.borderWidth = 5
+        fireButton?.layer.borderColor = UIColor.white.cgColor
+                leftButton?.layer.borderWidth = 5
+                leftButton?.layer.borderColor = UIColor.white.cgColor
+                rightButton?.layer.borderWidth = 5
+                rightButton?.layer.borderColor = UIColor.white.cgColor
         fireButton?.layer.cornerRadius = (fireButton?.frame.height)! / 2
         leftButton?.roundCorners(corners:[.topLeft,.bottomLeft], radius: (leftButton?.frame.height)! / 2)
         rightButton?.roundCorners(corners:[.topRight,.bottomRight], radius: (rightButton?.frame.height)! / 2)
@@ -95,14 +124,15 @@ class InvadersViewController: UIViewController {
     
     fileprivate func setIntro(){
         introView = UIView(frame: CGRect(x: 0, y: 0, width: (coverView?.frame.width)!, height: (coverView?.frame.height)!))
+        highScore = UIHighScores.init(xPos: 0, yPos: 100, width: (introView?.frame.width)!, height: 480)
         
-        if let introView = introView, let coverView = coverView {
+        if let introView = introView, let coverView = coverView, let highScore = highScore {
             let w = coverView.frame.width
             let h = coverView.frame.height
             coverView.backgroundColor = UIColor.black.withAlphaComponent(0.10)
             coverView.addSubview(introView)
             introView.backgroundColor = .clear
-            let alpha:AlphaNumeric = AlphaNumeric()
+            let alpha:UIAlphaNumeric = UIAlphaNumeric()
             
             let title = UIView(frame: CGRect(x: 0, y: 20, width: w, height: 90))
             title.addSubview(alpha.get(string: "UIVIEW", size: (title.frame.size), fcol: .orange, bcol:.green ))
@@ -124,6 +154,10 @@ class InvadersViewController: UIViewController {
             subTitle3.backgroundColor = .clear
             introView.addSubview(subTitle3)
             introView.layoutIfNeeded()
+            
+            introView.addSubview(highScore.highScoreView)
+            highScore.animateIn()
+            
         }
         setIntroInvaders()
         self.view.bringSubviewToFront(coverView!)
@@ -160,13 +194,17 @@ class InvadersViewController: UIViewController {
                 invader.spriteView?.removeFromSuperview()
             })
         }
+        
+        if let hiscore = highScore {
+            hiscore.removeHighscore()
+        }
     }
     
     fileprivate func setGameOverView(){
         for b in bombs {
             b.spriteView?.removeFromSuperview()
         }
-        let alpha:AlphaNumeric = AlphaNumeric()
+        let alpha:UIAlphaNumeric = UIAlphaNumeric()
         gameoverView = UIView(frame: CGRect(x: 0, y: viewHeight / 2, width: (coverView?.frame.width)!, height: 40))
         if let gameoverView = gameoverView {
             let gov = UIView(frame: CGRect(x: 0, y: 0, width: gameoverView.frame.width, height: gameoverView.frame.height))
@@ -184,10 +222,28 @@ class InvadersViewController: UIViewController {
                     gameoverView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
                     gameoverView.alpha = 0
                 }, completion: { (finished: Bool) in
-                    self.coverView?.alpha = 1
-                    self.model.gameState = .starting
-                    gameoverView.removeFromSuperview()
-                    self.setIntro()
+                    if (self.highScore?.isNewHiScore(score: self.model.score))! {
+                        self.introView = UIView(frame: CGRect(x: 0, y: 0, width: (self.coverView?.frame.width)!, height: (self.coverView?.frame.height)!))
+                        self.introView?.alpha = 0
+                        self.model.gameState = .hiScore
+                        self.highScore?.showNewHiScore(frame: CGRect(x: 0, y: 100, width: (self.coverView?.frame.width)!, height: 480))
+                        self.introView?.addSubview((self.highScore?.newHighScoreView!)!)
+                        self.coverView?.alpha = 1
+                        self.coverView?.addSubview(self.introView!)
+                        self.introView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
+                        UIView.animate(withDuration: 0.5, delay: 0.25, options: [], animations: {
+                            self.introView?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0).rotated(by: 0)
+                            self.introView?.alpha = 1
+                        }, completion: { (finished: Bool) in
+                            
+                        })
+                    } else {
+                        
+                        self.coverView?.alpha = 1
+                        self.model.gameState = .starting
+                        gameoverView.removeFromSuperview()
+                        self.setIntro()
+                    }
                 })
             })
         }
@@ -257,6 +313,7 @@ class InvadersViewController: UIViewController {
     fileprivate func startGame() {
         self.removeIntroInvaders()
         UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
+            self.highScore?.highScoreView.alpha = 0
             self.coverView!.alpha = 0
         }, completion: { (finished: Bool) in
             self.introView?.removeFromSuperview()
@@ -269,14 +326,14 @@ class InvadersViewController: UIViewController {
     
     fileprivate func setScore() {
         let scoreString = String(format: "%06d", model.score)
-        let alpha:AlphaNumeric = AlphaNumeric()
+        let alpha:UIAlphaNumeric = UIAlphaNumeric()
         scoreView = alpha.getStringView(string: scoreString, size: (scoreBox?.frame.size)!, fcol: .white, bcol: .red)
         scoreBox?.addSubview(scoreView.charView!)
         
     }
     
     func updateScore() {
-        let alpha:AlphaNumeric = AlphaNumeric()
+        let alpha:UIAlphaNumeric = UIAlphaNumeric()
         let scoreString = String(format: "%06d", model.score)
         for (index, char) in scoreString.enumerated() {
             alpha.updateChar(char: char, viewArray: scoreView.charViewArray[index], fcol: .white, bcol: .red)
@@ -288,7 +345,7 @@ class InvadersViewController: UIViewController {
             levelView?.removeFromSuperview()
         }
         let levelString = "LEVEL\(model.level)"
-        let alpha:AlphaNumeric = AlphaNumeric()
+        let alpha:UIAlphaNumeric = UIAlphaNumeric()
         let lv = alpha.getStringView(string: levelString, size: (levelBox?.frame.size)!, fcol: .white, bcol: .red)
         levelView = lv.charView
         levelBox?.addSubview(levelView!)
@@ -299,7 +356,7 @@ class InvadersViewController: UIViewController {
             livesView?.removeFromSuperview()
         }
         let levelString = "Lives\(model.lives)"
-        let alpha:AlphaNumeric = AlphaNumeric()
+        let alpha:UIAlphaNumeric = UIAlphaNumeric()
         let lv = alpha.getStringView(string: levelString, size: (livesBox?.frame.size)!, fcol: .white, bcol: .red)
         livesView = lv.charView
         livesBox?.addSubview(livesView!)
@@ -659,6 +716,7 @@ class InvadersViewController: UIViewController {
             checkMothership()
             break
         case .gameOver:
+            //highScore?.newHighScore(newScore: model.score)
             break
         case .hiScore:
             break
@@ -666,7 +724,7 @@ class InvadersViewController: UIViewController {
     }
     
     @objc func leftPressed(gesture:UILongPressGestureRecognizer) {
-        guard model.gameState == .playing else {
+        guard model.gameState == .playing || model.gameState == .hiScore else {
             return
         }
         if gesture.state == .began {
@@ -674,11 +732,29 @@ class InvadersViewController: UIViewController {
         } else if gesture.state == .ended {
             model.leftMove = 0
         }
-        
     }
     
+    @objc func leftTapped(gesture:UIGestureRecognizer) {
+        guard model.gameState == .hiScore else {
+            return
+        }
+        if let hiscore = highScore {
+            hiscore.charDown()
+        }
+    }
+    
+    @objc func rightTapped(gesture:UIGestureRecognizer) {
+        guard model.gameState == .hiScore else {
+            return
+        }
+        if let hiscore = highScore {
+            hiscore.charUp()
+        }
+    }
+    
+    
     @objc func rightPressed(gesture:UILongPressGestureRecognizer) {
-        guard model.gameState == .playing else {
+        guard model.gameState == .playing || model.gameState == .hiScore else {
             return
         }
         if gesture.state == .began {
@@ -689,6 +765,7 @@ class InvadersViewController: UIViewController {
     }
     
     @objc func fire(gesture:UITapGestureRecognizer) {
+        print("\(model.gameState)")
         guard model.bulletFired == false && model.gameState != .loading else {
             return
         }
@@ -697,8 +774,29 @@ class InvadersViewController: UIViewController {
             let generator = UIImpactFeedbackGenerator(style: .light)
             generator.impactOccurred()
         }
-        
-        if model.gameState == .starting || model.gameState == .gameOver {
+        if model.gameState == .hiScore {
+            if let hiscore = highScore, let introView = introView {
+                hiscore.alphaPos += 1
+                if (hiscore.alphaPos == 3) {
+                    hiscore.addScores(score: model.score)
+                    
+                    UIView.animate(withDuration: 0.5, delay: 3.0, options: [], animations: {
+                        introView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
+                        introView.alpha = 0
+                    }, completion: { (finished: Bool) in
+                        
+                        self.coverView?.alpha = 1
+                        self.model.gameState = .starting
+                        introView.removeFromSuperview()
+                        self.setIntro()
+                    })
+                } else {
+                    hiscore.hilightChar()
+                    
+                }
+            }
+        }
+        else if model.gameState == .starting || model.gameState == .gameOver {
             model.gameState = .loading
             startGame()
         } else if model.gameState != .ending {
@@ -710,6 +808,11 @@ class InvadersViewController: UIViewController {
                 soundFX.shootSound()
             }
         }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        //   print("shouldRecognizeSimultaneouslyWith")
+        return true
     }
     
 }

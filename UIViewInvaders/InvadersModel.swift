@@ -33,9 +33,9 @@ final class InvadersModel {
     }
     var level:Int = 1 {
         didSet{
-            guard gameState != .loading else {
-                return
-            }
+//            guard gameState != .loading else {
+//                return
+//            }
             viewController?.setLevel()
         }
     }

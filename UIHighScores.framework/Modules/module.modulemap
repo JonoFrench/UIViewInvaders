@@ -1,0 +1,11 @@
+framework module UIHighScores {
+  umbrella header "UIHighScores.h"
+
+  export *
+  module * { export * }
+}
+
+module UIHighScores.Swift {
+    header "UIHighScores-Swift.h"
+    requires objc
+}

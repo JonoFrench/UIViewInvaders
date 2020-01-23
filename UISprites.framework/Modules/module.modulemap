@@ -1,0 +1,11 @@
+framework module UISprites {
+  umbrella header "UISprites.h"
+
+  export *
+  module * { export * }
+}
+
+module UISprites.Swift {
+    header "UISprites-Swift.h"
+    requires objc
+}

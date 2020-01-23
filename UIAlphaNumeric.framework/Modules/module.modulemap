@@ -1,0 +1,11 @@
+framework module UIAlphaNumeric {
+  umbrella header "UIAlphaNumeric.h"
+
+  export *
+  module * { export * }
+}
+
+module UIAlphaNumeric.Swift {
+    header "UIAlphaNumeric-Swift.h"
+    requires objc
+}
