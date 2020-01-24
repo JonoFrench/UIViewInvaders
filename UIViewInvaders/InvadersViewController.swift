@@ -124,7 +124,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     
     fileprivate func setIntro(){
         introView = UIView(frame: CGRect(x: 0, y: 0, width: (coverView?.frame.width)!, height: (coverView?.frame.height)!))
-        highScore = UIHighScores.init(xPos: 0, yPos: 100, width: (introView?.frame.width)!, height: 480)
+        highScore = UIHighScores.init(xPos: 0, yPos: 192, width: (introView?.frame.width)!, height: ((coverView?.frame.height)!) - (300))
         
         if let introView = introView, let coverView = coverView, let highScore = highScore {
             let w = coverView.frame.width
@@ -135,7 +135,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             let alpha:UIAlphaNumeric = UIAlphaNumeric()
             
             let title = UIView(frame: CGRect(x: 0, y: 20, width: w, height: 90))
-            title.addSubview(alpha.get(string: "UIVIEW", size: (title.frame.size), fcol: .orange, bcol:.green ))
+            title.addSubview(alpha.get(string: "SPACE", size: (title.frame.size), fcol: .orange, bcol:.green ))
             title.backgroundColor = .clear
             introView.addSubview(title)
             
@@ -157,7 +157,10 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             
             introView.addSubview(highScore.highScoreView)
             highScore.animateIn()
-            
+            let _ = highScore.xPositionsForSprites(spriteWidth: 60, offSet: 0, numberOfSprites: 3)
+            let _ = highScore.xPositionsForSprites(spriteWidth: 60, offSet: 90, numberOfSprites: 3)
+            let _ = highScore.xPositionsForSprites(spriteWidth: 60, offSet: 0, numberOfSprites: 4)
+            let _ = highScore.xPositionsForSprites(spriteWidth: 30, offSet: 90, numberOfSprites: 4)
         }
         setIntroInvaders()
         self.view.bringSubviewToFront(coverView!)
@@ -272,6 +275,11 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             }
         }
         bombs.removeAll()
+        
+        if let bul = bullet?.spriteView {
+            bul.removeFromSuperview()
+        }
+        model.bulletFired = false
         
         base?.spriteView?.removeFromSuperview()
         base = nil
