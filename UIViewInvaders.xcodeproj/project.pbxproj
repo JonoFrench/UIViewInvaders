@@ -64,7 +64,6 @@
 /* Begin PBXFileReference section */
 		3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIAlphaNumeric.xcodeproj; path = ../UIAlphaNumeric/UIAlphaNumeric.xcodeproj; sourceTree = "<group>"; };
 		3481DC1C23D887E700FA7FF6 /* UISprites.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UISprites.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3481DC2923D88C5500FA7FF6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		34BC994523D760E30024A1BA /* Sprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprite.swift; sourceTree = "<group>"; };
 		34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIHighScores.xcodeproj; path = ../UIHighScores/UIHighScores.xcodeproj; sourceTree = "<group>"; };
 		34D7225A221ADEF200A46057 /* Retro Invaders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Retro Invaders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,7 +108,6 @@
 		3403BCA623D756A400C29047 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3481DC2923D88C5500FA7FF6 /* Foundation.framework */,
 				3481DC1C23D887E700FA7FF6 /* UISprites.framework */,
 			);
 			name = Frameworks;

@@ -266,12 +266,12 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             introView.addSubview(subTitle)
             
             let subTitle2 = UIView(frame: CGRect(x: 20, y: h - startTextY, width: w - 40, height: startTextHeight))
-            subTitle2.addSubview(alpha.get(string: "PRESS FIRE", size: (subTitle2.frame.size), fcol: .red, bcol:.yellow ))
+            subTitle2.addSubview(alpha.get(string: "TO PLAY", size: (subTitle2.frame.size), fcol: .red, bcol:.yellow ))
             subTitle2.backgroundColor = .clear
             introView.addSubview(subTitle2)
             
             let subTitle3 = UIView(frame: CGRect(x: 20, y: h - startTextY - startTextHeight - 5, width: w - 40, height: startTextHeight))
-            subTitle3.addSubview(alpha.get(string: "TO START", size: (subTitle3.frame.size), fcol: .red, bcol:.yellow ))
+            subTitle3.addSubview(alpha.get(string: "PRESS FIRE", size: (subTitle3.frame.size), fcol: .red, bcol:.yellow ))
             subTitle3.backgroundColor = .clear
             introView.addSubview(subTitle3)
             introView.layoutIfNeeded()
@@ -322,6 +322,19 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         if let hiscore = highScore {
             hiscore.removeHighscore()
         }
+    }
+    
+    fileprivate func removeWonInvaders(){
+        for invader in invaders {
+            UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
+                invader.spriteView?.transform = CGAffineTransform(scaleX: 3.1, y: 3.1)
+                invader.spriteView?.alpha = 0
+                invader.spriteView?.center = CGPoint(x: self.viewWidth / 2, y: self.viewHeight  )
+            }, completion: { (finished: Bool) in
+                invader.spriteView?.removeFromSuperview()
+            })
+        }
+
     }
     
     fileprivate func setGameOverView(){
@@ -750,8 +763,9 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             }
             if model.gameState != .ending {
                 if let b = base, let i = inv.spriteView {
-                    if i.frame.minY > baseLineY - 40 {
+                    if i.frame.minY > baseLineY - 30 {
                         model.gameState = .ending
+                        removeWonInvaders()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             //game over They've landed
                             self.model.gameState = .gameOver
@@ -761,6 +775,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
                     }
                     if b.checkHit(pos: (i.frame)) {
                         model.gameState = .ending
+                        removeWonInvaders()
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             //game over sunshine!
                             self.soundFX.baseHitSound()
@@ -773,9 +788,10 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             }
             for s in silos {
                 if let isv = inv.spriteView {
-                    if (s.checkHit(pos: isv.frame)) {
-                        //do nothing as invaders just wipe up the silo and thats in the checkhit function
-                    }
+                    let _ = s.checkHit(pos: isv.frame)
+//                    if (s.checkHit(pos: isv.frame)) {
+//                        //do nothing as invaders just wipe up the silo and thats in the checkhit function
+//                    }
                 }
             }
         }
@@ -823,7 +839,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             checkBullets()
             checkBombs()
             checkInvaders()
-            moveInvaders()
+            //moveInvaders()
             checkMothership()
             break
         case .playing:
@@ -884,7 +900,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     
     @objc func fire(gesture:UITapGestureRecognizer) {
-        print("\(model.gameState)")
+ //       print("\(model.gameState)")
         guard model.bulletFired == false && model.gameState != .loading else {
             return
         }
