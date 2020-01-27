@@ -22,11 +22,53 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     @IBOutlet weak var levelBox: UIView?
     @IBOutlet weak var livesBox: UIView?
     
+    @IBOutlet weak var leftBtnHeight: NSLayoutConstraint!
+    @IBOutlet weak var leftBtnWidth: NSLayoutConstraint!
+    @IBOutlet weak var rightBtnWidth: NSLayoutConstraint!
+    @IBOutlet weak var rightBtnHeight: NSLayoutConstraint!
+    @IBOutlet weak var fireBtnWidth: NSLayoutConstraint!
+    @IBOutlet weak var fireBtnHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var scoreHeight: NSLayoutConstraint!
+    @IBOutlet weak var scoreWidth: NSLayoutConstraint!
+    
+    @IBOutlet weak var levelHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var levelWidth: NSLayoutConstraint!
+    @IBOutlet weak var livesHeight: NSLayoutConstraint!
+    @IBOutlet weak var livesWidth: NSLayoutConstraint!
+    
+    @IBOutlet weak var baseLineBottom: NSLayoutConstraint!
+    
+    @IBOutlet weak var levelTop: NSLayoutConstraint!
+    
+    @IBOutlet weak var scoreTop: NSLayoutConstraint!
+    
+    @IBOutlet weak var livesTop: NSLayoutConstraint!
+    var titleY = 20
+    var titleHeight = 90
+    var subTitleHeight = 60
+    var startTextHeight:CGFloat = 30.0
+    var startTextY:CGFloat = 50.0
+    var highScoreYpos:CGFloat = 192
+    var highScoreHeight:CGFloat = 300
+    
+    var siloBaseLine:CGFloat = 120
+    
+    var invaderPosY = 300
+    var invaderFinishY = 600
+    var invaderStride = 60
+    var invaderSize = 40
+    var introInvaders:CGFloat = 6
     var introView:UIView?
     var gameoverView:UIView?
     var levelView:UIView?
     var livesView:UIView?
-    
+    var siloWidth = 80
+    var siloHeight = 60
+    var invaderStartY = 100
+    var invaderLevelIncrease = 20
+
     var model:InvadersModel = InvadersModel()
     var base:Base?
     var motherShip:MotherShip?
@@ -50,9 +92,6 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setScore()
-        setLevel()
-        setLives()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,6 +101,13 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         displayLink.add(to: .main, forMode:.common)
     }
     
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        setConstraints()
+        
+    }
+    
     override func viewDidLayoutSubviews() {
         super .viewDidLayoutSubviews()
         if !model.layoutSet { // only want to do this once.
@@ -69,9 +115,58 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             baseLineY = ((baseLine?.center.y)!) - 15
             viewWidth = self.view.frame.width
             viewHeight = self.view.frame.height
+            setScore()
+            setLevel()
+            setLives()
             setControls()
-            setStars()
+            //setStars()
             setIntro()
+        }
+    }
+    
+    func setConstraints() {
+        if self.view.frame.height < 600 {
+            leftBtnHeight.constant = 75
+            leftBtnWidth.constant = 75
+            rightBtnHeight.constant = 75
+            rightBtnWidth.constant = 75
+            fireBtnWidth.constant = 75
+            fireBtnHeight.constant = 75
+            
+            scoreHeight.constant = 25
+            livesHeight.constant = 25
+            levelHeight.constant = 25
+            
+            scoreWidth.constant = 80
+            livesWidth.constant = 80
+            levelWidth.constant = 80
+            
+            baseLineBottom.constant = 80
+            livesTop.constant = -10
+            scoreTop.constant = -10
+            levelTop.constant = -10
+            
+            titleY = 0
+            titleHeight = 70
+            subTitleHeight = 50
+            startTextHeight = 25
+            startTextY = 30
+            
+            highScoreYpos = 125
+            highScoreHeight = 180
+            
+            invaderPosY = 220
+            invaderFinishY = 420
+            invaderStride = 50
+            invaderSize = 35
+            introInvaders = 5
+            
+            siloBaseLine = 90
+            siloWidth = 70
+            siloHeight = 50
+            invaderStartY = 60
+            invaderLevelIncrease = 15
+            view.setNeedsLayout()
         }
     }
     
@@ -110,21 +205,47 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         rightButton?.layer.masksToBounds = true
         leftButton?.layer.shouldRasterize = true
         rightButton?.layer.shouldRasterize = true
+
+ 
+        
+        if #available(iOS 11.0, *) {
+            leftButton?.layer.cornerRadius = (leftButton?.frame.height)! / 2
+            leftButton?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        } else {
+            //leftButton?.roundCorners(corners:[.topLeft,.bottomLeft], radius: (leftButton?.frame.height)! / 2)
+            
+            let path = UIBezierPath(roundedRect: leftButton!.bounds, byRoundingCorners: [.topLeft,.bottomLeft], cornerRadii: CGSize(width: (leftButton?.frame.width)! , height: (leftButton?.frame.height)! ))
+
+            let maskLayer = CAShapeLayer()
+            maskLayer.path = path.cgPath
+            leftButton?.layer.mask = maskLayer
+        }
+        if #available(iOS 11.0, *) {
+            rightButton?.layer.cornerRadius = (rightButton?.frame.height)! / 2
+            rightButton?.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        } else {
+            //rightButton?.roundCorners(corners:[.topRight,.bottomRight], radius: (rightButton?.frame.height)! / 2)
+            
+            let path = UIBezierPath(roundedRect: rightButton!.bounds, byRoundingCorners: [.topRight,.bottomRight], cornerRadii: CGSize(width: (rightButton?.frame.width)! , height: (rightButton?.frame.height)!))
+
+            let maskLayer = CAShapeLayer()
+            maskLayer.path = path.cgPath
+            rightButton?.layer.mask = maskLayer
+        }
         
         fireButton?.layer.borderWidth = 5
         fireButton?.layer.borderColor = UIColor.white.cgColor
-                leftButton?.layer.borderWidth = 5
-                leftButton?.layer.borderColor = UIColor.white.cgColor
-                rightButton?.layer.borderWidth = 5
-                rightButton?.layer.borderColor = UIColor.white.cgColor
+        leftButton?.layer.borderWidth = 5
+        leftButton?.layer.borderColor = UIColor.white.cgColor
+        rightButton?.layer.borderWidth = 5
+        rightButton?.layer.borderColor = UIColor.white.cgColor
         fireButton?.layer.cornerRadius = (fireButton?.frame.height)! / 2
-        leftButton?.roundCorners(corners:[.topLeft,.bottomLeft], radius: (leftButton?.frame.height)! / 2)
-        rightButton?.roundCorners(corners:[.topRight,.bottomRight], radius: (rightButton?.frame.height)! / 2)
+        leftButton?.layer.setNeedsLayout()
     }
     
     fileprivate func setIntro(){
         introView = UIView(frame: CGRect(x: 0, y: 0, width: (coverView?.frame.width)!, height: (coverView?.frame.height)!))
-        highScore = UIHighScores.init(xPos: 0, yPos: 192, width: (introView?.frame.width)!, height: ((coverView?.frame.height)!) - (300))
+        highScore = UIHighScores.init(xPos: 0, yPos: highScoreYpos, width: (introView?.frame.width)!, height: ((coverView?.frame.height)!) - (highScoreHeight))
         
         if let introView = introView, let coverView = coverView, let highScore = highScore {
             let w = coverView.frame.width
@@ -134,22 +255,22 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             introView.backgroundColor = .clear
             let alpha:UIAlphaNumeric = UIAlphaNumeric()
             
-            let title = UIView(frame: CGRect(x: 0, y: 20, width: w, height: 90))
-            title.addSubview(alpha.get(string: "SPACE", size: (title.frame.size), fcol: .orange, bcol:.green ))
+            let title = UIView(frame: CGRect(x: 0, y: titleY, width: Int(w), height: titleHeight))
+            title.addSubview(alpha.get(string: "RETRO", size: (title.frame.size), fcol: .orange, bcol:.green ))
             title.backgroundColor = .clear
             introView.addSubview(title)
             
-            let subTitle = UIView(frame: CGRect(x: 0, y: 130, width: w, height: 60))
+            let subTitle = UIView(frame: CGRect(x: 0, y: titleY + titleHeight + 5, width: Int(w), height: subTitleHeight))
             subTitle.addSubview(alpha.get(string: "INVADERS", size: (subTitle.frame.size), fcol: .green, bcol:.red ))
             subTitle.backgroundColor = .clear
             introView.addSubview(subTitle)
             
-            let subTitle2 = UIView(frame: CGRect(x: 20, y: h-100, width: w - 40, height: 30))
+            let subTitle2 = UIView(frame: CGRect(x: 20, y: h - startTextY, width: w - 40, height: startTextHeight))
             subTitle2.addSubview(alpha.get(string: "PRESS FIRE", size: (subTitle2.frame.size), fcol: .red, bcol:.yellow ))
             subTitle2.backgroundColor = .clear
             introView.addSubview(subTitle2)
             
-            let subTitle3 = UIView(frame: CGRect(x: 20, y: h - 60, width: w - 40, height: 30))
+            let subTitle3 = UIView(frame: CGRect(x: 20, y: h - startTextY - startTextHeight - 5, width: w - 40, height: startTextHeight))
             subTitle3.addSubview(alpha.get(string: "TO START", size: (subTitle3.frame.size), fcol: .red, bcol:.yellow ))
             subTitle3.backgroundColor = .clear
             introView.addSubview(subTitle3)
@@ -169,8 +290,8 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     fileprivate func setIntroInvaders() {
         let step = viewWidth / 6
         for i in stride(from: step, to: step * 6, by: step) {
-            for z in stride(from: 300, to: 600, by: 60){
-                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: 40, width: 40)
+            for z in stride(from: invaderPosY, to: invaderFinishY, by: invaderStride){
+                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: invaderSize, width: invaderSize)
                 invader.spriteView?.alpha = 0
                 invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                 self.view.addSubview(invader.spriteView!)
@@ -383,10 +504,10 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     
     fileprivate func setSilos() {
-        let sy = baseLineY - 120
+        let sy = baseLineY - siloBaseLine
         let sx = self.view.frame.width / 6
         for i in 1...3 {
-            let s = Silo(pos: CGPoint(x: sx * CGFloat(i*2) - (sx) - 40, y: sy), height: 60, width: 80)
+            let s = Silo(pos: CGPoint(x: sx * CGFloat(i*2) - (sx) - 40, y: sy), height: siloHeight, width: siloWidth)
             self.view.addSubview(s.spriteView!)
             silos.append(s)
         }
@@ -422,10 +543,10 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         invaders.removeAll()
         var delay:Double = 0.0
         let step = viewWidth / 6
-        let levelPos = model.level < 5 ? model.level * 20 : 100
+        let levelPos = model.level < 5 ? model.level * invaderLevelIncrease : 100
         for i in stride(from: step, to: step * 6, by: step) {
-            for z in stride(from: 100 + levelPos, to: 400 + levelPos, by: 60){
-                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: 40, width: 40)
+            for z in stride(from: invaderStartY + levelPos, to: invaderStartY + 300 + levelPos, by: 60){
+                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: invaderSize, width: invaderSize)
                 model.numInvaders += 1
                 invader.spriteView?.alpha = 0
                 invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
@@ -459,7 +580,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     
     fileprivate func checkMothership()
     {
-        let yPos = (scoreBox?.center.y)! + 30
+        let yPos = (scoreBox?.center.y)! + 50
         if motherShip == nil {
             // random add a new mothership
             if Int.random(in: 0...300) == 1 {
@@ -589,12 +710,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         for inv in invaders {
             // rotate the odd one
             if Int.random(in: 0...1000) == 1 {
-                UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
-                    inv.spriteView!.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
-                }, completion: nil)
-                UIView.animate(withDuration: 0.5, delay: 0.25, options: [], animations: {
-                    inv.spriteView!.transform = CGAffineTransform(rotationAngle: CGFloat.pi * 2)
-                }, completion: nil)
+                inv.rotateMe()
             }
             
             if model.invaderXSpeed > 0 {
@@ -614,12 +730,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             if inv.isDead {continue}
             if Int.random(in: 0...model.bombRandomiser) == 1 && model.gameState == .playing {
                 dropBomb(pos: inv.position)
-                UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
-                    inv.spriteView!.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
-                }, completion: nil)
-                UIView.animate(withDuration: 0.5, delay: 0.25, options: [], animations: {
-                    inv.spriteView!.transform = CGAffineTransform(rotationAngle: CGFloat.pi * 2)
-                }, completion: nil)
+                inv.rotateMe()
             }
             // use the amount of dead invaders to increase the speed of the remaining
             // so the game gets harder.
@@ -788,7 +899,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
                 if (hiscore.alphaPos == 3) {
                     hiscore.addScores(score: model.score)
                     
-                    UIView.animate(withDuration: 0.5, delay: 3.0, options: [], animations: {
+                    UIView.animate(withDuration: 0.5, delay: 0.5, options: [], animations: {
                         introView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
                         introView.alpha = 0
                     }, completion: { (finished: Bool) in

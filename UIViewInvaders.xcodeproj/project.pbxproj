@@ -67,7 +67,7 @@
 		3481DC2923D88C5500FA7FF6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		34BC994523D760E30024A1BA /* Sprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprite.swift; sourceTree = "<group>"; };
 		34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIHighScores.xcodeproj; path = ../UIHighScores/UIHighScores.xcodeproj; sourceTree = "<group>"; };
-		34D7225A221ADEF200A46057 /* UIViewInvaders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIViewInvaders.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		34D7225A221ADEF200A46057 /* Retro Invaders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Retro Invaders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34D7225D221ADEF200A46057 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		34D7225F221ADEF200A46057 /* InvadersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvadersViewController.swift; sourceTree = "<group>"; };
 		34D72262221ADEF200A46057 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 		34D7225B221ADEF200A46057 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				34D7225A221ADEF200A46057 /* UIViewInvaders.app */,
+				34D7225A221ADEF200A46057 /* Retro Invaders.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -198,7 +198,7 @@
 			);
 			name = UIViewInvaders;
 			productName = UIViewInvaders;
-			productReference = 34D7225A221ADEF200A46057 /* UIViewInvaders.app */;
+			productReference = 34D7225A221ADEF200A46057 /* Retro Invaders.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -450,7 +450,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaypeeff.UIViewInvaders;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Retro Invaders";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -475,7 +475,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaypeeff.UIViewInvaders;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Retro Invaders";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
