@@ -29,6 +29,7 @@
 		34D7227F2224301300A46057 /* ufo_highpitch.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D7227E2224301300A46057 /* ufo_highpitch.wav */; };
 		34D722812224319A00A46057 /* fastinvader1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D722802224319900A46057 /* fastinvader1.wav */; };
 		34D72283222558AB00A46057 /* SoundFX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D72282222558AB00A46057 /* SoundFX.swift */; };
+		34FC7B7023E06312007E0E3A /* Invaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FC7B6F23E06312007E0E3A /* Invaders.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +86,7 @@
 		34D7227E2224301300A46057 /* ufo_highpitch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ufo_highpitch.wav; sourceTree = "<group>"; };
 		34D722802224319900A46057 /* fastinvader1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fastinvader1.wav; sourceTree = "<group>"; };
 		34D72282222558AB00A46057 /* SoundFX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFX.swift; sourceTree = "<group>"; };
+		34FC7B6F23E06312007E0E3A /* Invaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invaders.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				34BC994523D760E30024A1BA /* Sprite.swift */,
+				34FC7B6F23E06312007E0E3A /* Invaders.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 				34D7227622204CE900A46057 /* InvadersModel.swift in Sources */,
 				34D72260221ADEF200A46057 /* InvadersViewController.swift in Sources */,
 				343A37F923E0554600BB90B2 /* Sounds.swift in Sources */,
+				34FC7B7023E06312007E0E3A /* Invaders.swift in Sources */,
 				343A37FB23E056C200BB90B2 /* SetupGame.swift in Sources */,
 				34D7225E221ADEF200A46057 /* AppDelegate.swift in Sources */,
 				34D72283222558AB00A46057 /* SoundFX.swift in Sources */,

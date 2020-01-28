@@ -174,12 +174,15 @@ extension InvadersViewController {
     
     func setInvaders() {
         invaders.removeAll()
+        var invaderType = 0
+
         var delay:Double = 0.0
         let step = viewWidth / 6
         let levelPos = model.level < 5 ? model.level * invaderLevelIncrease : 100
         for i in stride(from: step, to: step * 6, by: step) {
+            invaderType = 0
             for z in stride(from: invaderStartY + levelPos, to: invaderStartY + 300 + levelPos, by: 60){
-                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: invaderSize, width: invaderSize)
+                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: invaderSize, width: invaderSize,invaderType: invaderType)
                 model.numInvaders += 1
                 invader.spriteView?.alpha = 0
                 invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
@@ -194,6 +197,7 @@ extension InvadersViewController {
                 }, completion: { (finished: Bool) in
                 })
                 delay += 0.020
+                invaderType += 1
             }
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {

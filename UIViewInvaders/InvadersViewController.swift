@@ -215,10 +215,12 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     
     fileprivate func setIntroInvaders() {
+        var invaderType = 0
         let step = viewWidth / 6
         for i in stride(from: step, to: step * 6, by: step) {
+            invaderType = 0
             for z in stride(from: invaderPosY, to: invaderFinishY, by: invaderStride){
-                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: invaderSize, width: invaderSize)
+                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: invaderSize, width: invaderSize, invaderType:invaderType)
                 invader.spriteView?.alpha = 0
                 invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
                 self.view.addSubview(invader.spriteView!)
@@ -231,7 +233,9 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
                     invader.position = CGPoint(x: i, y: CGFloat(z))
                 }, completion: { (finished: Bool) in
                 })
+                invaderType += 1
             }
+            
         }
     }
     
