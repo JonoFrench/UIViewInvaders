@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		343A37F923E0554600BB90B2 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343A37F823E0554600BB90B2 /* Sounds.swift */; };
+		343A37FB23E056C200BB90B2 /* SetupGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343A37FA23E056C200BB90B2 /* SetupGame.swift */; };
 		3481DC2023D8884700FA7FF6 /* UIHighScores.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34BC998123D85FFF0024A1BA /* UIHighScores.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3481DC2523D8890000FA7FF6 /* UIAlphaNumeric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3403BCA523D7562E00C29047 /* UIAlphaNumeric.framework */; };
 		3481DC2623D8890700FA7FF6 /* UIHighScores.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BC998123D85FFF0024A1BA /* UIHighScores.framework */; };
@@ -63,6 +65,8 @@
 
 /* Begin PBXFileReference section */
 		3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIAlphaNumeric.xcodeproj; path = ../UIAlphaNumeric/UIAlphaNumeric.xcodeproj; sourceTree = "<group>"; };
+		343A37F823E0554600BB90B2 /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
+		343A37FA23E056C200BB90B2 /* SetupGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupGame.swift; sourceTree = "<group>"; };
 		3481DC1C23D887E700FA7FF6 /* UISprites.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UISprites.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		34BC994523D760E30024A1BA /* Sprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprite.swift; sourceTree = "<group>"; };
 		34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIHighScores.xcodeproj; path = ../UIHighScores/UIHighScores.xcodeproj; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 		34D7225C221ADEF200A46057 /* UIViewInvaders */ = {
 			isa = PBXGroup;
 			children = (
+				343A37FA23E056C200BB90B2 /* SetupGame.swift */,
 				34BC994723D7650A0024A1BA /* Sprites */,
 				34D7225D221ADEF200A46057 /* AppDelegate.swift */,
 				34D72264221ADEF500A46057 /* Assets.xcassets */,
@@ -174,6 +179,7 @@
 				34D7227722242D9200A46057 /* shoot.wav */,
 				34D7227A22242EFE00A46057 /* explosion.wav */,
 				34D7227922242EFD00A46057 /* invaderkilled.wav */,
+				343A37F823E0554600BB90B2 /* Sounds.swift */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -286,6 +292,8 @@
 				34D72272221C535100A46057 /* extentions.swift in Sources */,
 				34D7227622204CE900A46057 /* InvadersModel.swift in Sources */,
 				34D72260221ADEF200A46057 /* InvadersViewController.swift in Sources */,
+				343A37F923E0554600BB90B2 /* Sounds.swift in Sources */,
+				343A37FB23E056C200BB90B2 /* SetupGame.swift in Sources */,
 				34D7225E221ADEF200A46057 /* AppDelegate.swift in Sources */,
 				34D72283222558AB00A46057 /* SoundFX.swift in Sources */,
 			);
@@ -450,7 +458,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaypeeff.UIViewInvaders;
 				PRODUCT_NAME = "Retro Invaders";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -475,7 +483,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaypeeff.UIViewInvaders;
 				PRODUCT_NAME = "Retro Invaders";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

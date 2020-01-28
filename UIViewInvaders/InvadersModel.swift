@@ -14,6 +14,7 @@ enum GameState {
     case loading
     case playing
     case nextLevel
+    case dieing
     case ending
     case gameOver
     case hiScore

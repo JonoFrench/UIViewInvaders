@@ -68,7 +68,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     var siloHeight = 60
     var invaderStartY = 100
     var invaderLevelIncrease = 20
-
+    
     var model:InvadersModel = InvadersModel()
     var base:Base?
     var motherShip:MotherShip?
@@ -104,8 +104,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        setConstraints()
-        
+        setConstraints()        
     }
     
     override func viewDidLayoutSubviews() {
@@ -170,79 +169,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         }
     }
     
-    fileprivate func setControls(){
-        //Set up gesture recognizers for the controls
-        let leftButtonGesture = UILongPressGestureRecognizer(target: self, action: #selector(leftPressed))
-        leftButtonGesture.minimumPressDuration = 0
-        leftButtonGesture.allowableMovement = 0
-        leftButtonGesture.delegate = self
-        leftButton?.addGestureRecognizer(leftButtonGesture)
-        
-        let rightButtonGesture = UILongPressGestureRecognizer(target: self, action: #selector(rightPressed))
-        rightButtonGesture.minimumPressDuration = 0
-        rightButtonGesture.allowableMovement = 0
-        rightButtonGesture.delegate = self
-        rightButton?.addGestureRecognizer(rightButtonGesture)
-        
-        let leftButtonTap = UITapGestureRecognizer(target: self, action: #selector(leftTapped))
-        leftButtonTap.delegate = self
-        leftButton?.addGestureRecognizer(leftButtonTap)
-        
-        let rightButtonTap = UITapGestureRecognizer(target: self, action: #selector(rightTapped))
-        rightButtonTap.delegate = self
-        rightButton?.addGestureRecognizer(rightButtonTap)
-        
-        
-        
-        let fireGesture = UITapGestureRecognizer(target: self, action: #selector(fire))
-        fireGesture.numberOfTapsRequired = 1
-        fireButton?.addGestureRecognizer(fireGesture)
-        
-        //Set the control layers
-        leftButton?.clipsToBounds = true
-        rightButton?.clipsToBounds = true
-        leftButton?.layer.masksToBounds = true
-        rightButton?.layer.masksToBounds = true
-        leftButton?.layer.shouldRasterize = true
-        rightButton?.layer.shouldRasterize = true
-
- 
-        
-        if #available(iOS 11.0, *) {
-            leftButton?.layer.cornerRadius = (leftButton?.frame.height)! / 2
-            leftButton?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
-        } else {
-            //leftButton?.roundCorners(corners:[.topLeft,.bottomLeft], radius: (leftButton?.frame.height)! / 2)
-            
-            let path = UIBezierPath(roundedRect: leftButton!.bounds, byRoundingCorners: [.topLeft,.bottomLeft], cornerRadii: CGSize(width: (leftButton?.frame.width)! , height: (leftButton?.frame.height)! ))
-
-            let maskLayer = CAShapeLayer()
-            maskLayer.path = path.cgPath
-            leftButton?.layer.mask = maskLayer
-        }
-        if #available(iOS 11.0, *) {
-            rightButton?.layer.cornerRadius = (rightButton?.frame.height)! / 2
-            rightButton?.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-        } else {
-            //rightButton?.roundCorners(corners:[.topRight,.bottomRight], radius: (rightButton?.frame.height)! / 2)
-            
-            let path = UIBezierPath(roundedRect: rightButton!.bounds, byRoundingCorners: [.topRight,.bottomRight], cornerRadii: CGSize(width: (rightButton?.frame.width)! , height: (rightButton?.frame.height)!))
-
-            let maskLayer = CAShapeLayer()
-            maskLayer.path = path.cgPath
-            rightButton?.layer.mask = maskLayer
-        }
-        
-        fireButton?.layer.borderWidth = 5
-        fireButton?.layer.borderColor = UIColor.white.cgColor
-        leftButton?.layer.borderWidth = 5
-        leftButton?.layer.borderColor = UIColor.white.cgColor
-        rightButton?.layer.borderWidth = 5
-        rightButton?.layer.borderColor = UIColor.white.cgColor
-        fireButton?.layer.cornerRadius = (fireButton?.frame.height)! / 2
-        leftButton?.layer.setNeedsLayout()
-    }
-    
+   
     fileprivate func setIntro(){
         introView = UIView(frame: CGRect(x: 0, y: 0, width: (coverView?.frame.width)!, height: (coverView?.frame.height)!))
         highScore = UIHighScores.init(xPos: 0, yPos: highScoreYpos, width: (introView?.frame.width)!, height: ((coverView?.frame.height)!) - (highScoreHeight))
@@ -325,16 +252,24 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     
     fileprivate func removeWonInvaders(){
-        for invader in invaders {
-            UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
-                invader.spriteView?.transform = CGAffineTransform(scaleX: 3.1, y: 3.1)
-                invader.spriteView?.alpha = 0
-                invader.spriteView?.center = CGPoint(x: self.viewWidth / 2, y: self.viewHeight  )
-            }, completion: { (finished: Bool) in
-                invader.spriteView?.removeFromSuperview()
-            })
+        for s in silos {
+            s.isDying = true
+            s.startAnimating()
         }
-
+        
+        let _ = invaders.filter{ !$0.isDead }.map{ invader in UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
+            invader.spriteView?.transform = CGAffineTransform(scaleX: 3.1, y: 3.1)
+            invader.spriteView?.alpha = 0
+            invader.spriteView?.center = CGPoint(x: self.viewWidth / 2, y: self.viewHeight  )
+        }, completion: { (finished: Bool) in
+            invader.spriteView?.removeFromSuperview()
+        })}
+        
+        model.gameState = .ending
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.model.gameState = .gameOver
+            self.resetGame()
+        }
     }
     
     fileprivate func setGameOverView(){
@@ -465,132 +400,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             self.setBase()
         })
     }
-    
-    fileprivate func setScore() {
-        let scoreString = String(format: "%06d", model.score)
-        let alpha:UIAlphaNumeric = UIAlphaNumeric()
-        scoreView = alpha.getStringView(string: scoreString, size: (scoreBox?.frame.size)!, fcol: .white, bcol: .red)
-        scoreBox?.addSubview(scoreView.charView!)
         
-    }
-    
-    func updateScore() {
-        let alpha:UIAlphaNumeric = UIAlphaNumeric()
-        let scoreString = String(format: "%06d", model.score)
-        for (index, char) in scoreString.enumerated() {
-            alpha.updateChar(char: char, viewArray: scoreView.charViewArray[index], fcol: .white, bcol: .red)
-        }
-    }
-    
-    func setLevel() {
-        if levelView != nil {
-            levelView?.removeFromSuperview()
-        }
-        let levelString = "LEVEL\(model.level)"
-        let alpha:UIAlphaNumeric = UIAlphaNumeric()
-        let lv = alpha.getStringView(string: levelString, size: (levelBox?.frame.size)!, fcol: .white, bcol: .red)
-        levelView = lv.charView
-        levelBox?.addSubview(levelView!)
-    }
-    
-    func setLives() {
-        if livesView != nil {
-            livesView?.removeFromSuperview()
-        }
-        let levelString = "Lives\(model.lives)"
-        let alpha:UIAlphaNumeric = UIAlphaNumeric()
-        let lv = alpha.getStringView(string: levelString, size: (livesBox?.frame.size)!, fcol: .white, bcol: .red)
-        livesView = lv.charView
-        livesBox?.addSubview(livesView!)
-    }
-    
-    fileprivate func setStars() {
-        let w = Int(self.view.frame.width)
-        let h = Int((baseLine?.frame.minY)!)
-        for _ in 1...500 {
-            let x = Int.random(in: 0...w)
-            let y = Int.random(in: 0...h)
-            let star = UIView(frame: CGRect(x: x, y: y, width: 1, height: 1))
-            star.backgroundColor = .white
-            self.view.addSubview(star)
-        }
-    }
-    
-    fileprivate func setSilos() {
-        let sy = baseLineY - siloBaseLine
-        let sx = self.view.frame.width / 6
-        for i in 1...3 {
-            let s = Silo(pos: CGPoint(x: sx * CGFloat(i*2) - (sx) - 40, y: sy), height: siloHeight, width: siloWidth)
-            self.view.addSubview(s.spriteView!)
-            silos.append(s)
-        }
-    }
-    
-    fileprivate func setBase() {
-        if let base = base {
-            base.spriteView?.removeFromSuperview()
-        }
-        model.leftMove = 0
-        model.rightMove = 0
-        base = Base(pos: CGPoint(x: 150, y: baseLineY), height: 30, width: 45)
-        if let base = base {
-            base.position = CGPoint(x: self.view.frame.width / 2, y: self.view.frame.height)
-            base.spriteView?.alpha = 0
-            base.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-            self.view.addSubview((base.spriteView)!)
-            base.animate()
-            
-            UIView.animate(withDuration: 1.0, delay: 0.0, options: [], animations: {
-                base.spriteView?.transform = CGAffineTransform(scaleX: 1, y: 1)
-                base.spriteView?.alpha = 1
-                base.spriteView?.center = CGPoint(x: self.view.frame.width / 2, y: self.baseLineY)
-            }, completion: { (finished: Bool) in
-                self.model.gameState = .playing
-                base.position = CGPoint(x: self.view.frame.width / 2, y: self.baseLineY)
-            })
-        }
-    }
-    
-    
-    fileprivate func setInvaders() {
-        invaders.removeAll()
-        var delay:Double = 0.0
-        let step = viewWidth / 6
-        let levelPos = model.level < 5 ? model.level * invaderLevelIncrease : 100
-        for i in stride(from: step, to: step * 6, by: step) {
-            for z in stride(from: invaderStartY + levelPos, to: invaderStartY + 300 + levelPos, by: 60){
-                let invader:Invader = Invader(pos: CGPoint(x: viewWidth / 2, y: 20), height: invaderSize, width: invaderSize)
-                model.numInvaders += 1
-                invader.spriteView?.alpha = 0
-                invader.spriteView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                self.view.addSubview(invader.spriteView!)
-                invaders.append(invader)
-                invader.animate()
-                UIView.animate(withDuration: 1.0, delay: delay, options: [], animations: {
-                    invader.spriteView?.transform = CGAffineTransform(scaleX: 1, y: 1)
-                    invader.spriteView?.alpha = 1
-                    invader.spriteView?.center = CGPoint(x: i, y: CGFloat(z))
-                    invader.position = CGPoint(x: i, y: CGFloat(z))
-                }, completion: { (finished: Bool) in
-                })
-                delay += 0.020
-            }
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.model.gameState = .playing
-            self.invaderSound()
-        }
-    }
-    
-    func invaderSound() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            self.soundFX.invaderSound()
-            if self.model.gameState == .playing || self.model.gameState == .loading || self.model.gameState == .starting {
-                self.invaderSound()
-            }
-        }
-    }
-    
     fileprivate func checkMothership()
     {
         let yPos = (scoreBox?.center.y)! + 50
@@ -614,18 +424,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             }
         }
     }
-    
-    fileprivate func motherSound(){
-        self.soundFX.motherSound()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            if self.motherShip != nil {
-                if !(self.motherShip?.isDead)! {
-                    self.motherSound()
-                }
-            }
-        }
-    }
-    
+        
     fileprivate func moveBase() {
         if let base = base {
             let x = base.position.x
@@ -690,18 +489,15 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
                 if let b = base {
                     if b.checkHit(pos:bomb.position) {
                         bomb.isDying = true
-                        model.gameState = .ending
+                        model.gameState = .dieing
                         self.soundFX.baseHitSound()
                         self.model.lives -= 1
-                        if self.model.lives == 0 {
-                            self.model.gameState = .gameOver
-                        }
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                             //self.model.lives -= 1
                             if self.model.lives == 0 {
-                                //self.model.gameState = .gameOver
-                                self.resetGame()
+                                self.model.gameState = .ending
+                                self.removeWonInvaders()
                                 
                             } else {
                                 self.setBase()
@@ -766,22 +562,12 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
                     if i.frame.minY > baseLineY - 30 {
                         model.gameState = .ending
                         removeWonInvaders()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            //game over They've landed
-                            self.model.gameState = .gameOver
-                            self.resetGame()
-                        }
                         break
                     }
                     if b.checkHit(pos: (i.frame)) {
                         model.gameState = .ending
                         removeWonInvaders()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            //game over sunshine!
-                            self.soundFX.baseHitSound()
-                            self.model.gameState = .gameOver
-                            self.resetGame()
-                        }
+                        self.soundFX.baseHitSound()
                         break
                     }
                 }
@@ -789,19 +575,13 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             for s in silos {
                 if let isv = inv.spriteView {
                     let _ = s.checkHit(pos: isv.frame)
-//                    if (s.checkHit(pos: isv.frame)) {
-//                        //do nothing as invaders just wipe up the silo and thats in the checkhit function
-//                    }
-                }
+                 }
             }
         }
     }
     
     func moveInvaders() {
-        for inv in invaders {
-            if inv.isDead {continue}
-            inv.move(x: model.invaderXSpeed, y: model.invaderYSpeed)
-        }
+        let _ = invaders.filter{ !$0.isDead }.map{ $0.move(x: model.invaderXSpeed, y: model.invaderYSpeed)}
         if model.invaderYSpeed > 0 { model.invaderYSpeed = 0}
     }
     
@@ -817,6 +597,8 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         bomb.startAnimating()
     }
     
+    
+    //Game loop
     // refreshDisplay is called from the runloop and should be called every screen refresh cycle
     
     @objc func refreshDisplay() {
@@ -834,6 +616,13 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 self.nextLevel()
             }
+            break
+        case .dieing:
+            checkBullets()
+            checkBombs()
+            checkInvaders()
+            moveInvaders()
+            checkMothership()
             break
         case .ending:
             checkBullets()
@@ -858,8 +647,10 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         }
     }
     
+    //Controls
+    
     @objc func leftPressed(gesture:UILongPressGestureRecognizer) {
-        guard model.gameState == .playing || model.gameState == .hiScore else {
+        guard model.gameState == .playing else {
             return
         }
         if gesture.state == .began {
@@ -889,7 +680,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     
     
     @objc func rightPressed(gesture:UILongPressGestureRecognizer) {
-        guard model.gameState == .playing || model.gameState == .hiScore else {
+        guard model.gameState == .playing else {
             return
         }
         if gesture.state == .began {
@@ -900,7 +691,6 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     
     @objc func fire(gesture:UITapGestureRecognizer) {
- //       print("\(model.gameState)")
         guard model.bulletFired == false && model.gameState != .loading else {
             return
         }
@@ -934,7 +724,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         else if model.gameState == .starting || model.gameState == .gameOver {
             model.gameState = .loading
             startGame()
-        } else if model.gameState != .ending {
+        } else if model.gameState != .ending && model.gameState != .dieing {
             if let bsv = base?.spriteView {
                 bullet = Bullet(pos: bsv.center, height: 24, width: 8)
                 bullet?.position = bsv.center
@@ -946,9 +736,11 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        //   print("shouldRecognizeSimultaneouslyWith")
         return true
     }
+
+    
+
     
 }
 
