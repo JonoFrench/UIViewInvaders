@@ -10,11 +10,7 @@
 		343A37F923E0554600BB90B2 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343A37F823E0554600BB90B2 /* Sounds.swift */; };
 		343A37FB23E056C200BB90B2 /* SetupGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343A37FA23E056C200BB90B2 /* SetupGame.swift */; };
 		3481DC2023D8884700FA7FF6 /* UIHighScores.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34BC998123D85FFF0024A1BA /* UIHighScores.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3481DC2523D8890000FA7FF6 /* UIAlphaNumeric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3403BCA523D7562E00C29047 /* UIAlphaNumeric.framework */; };
 		3481DC2623D8890700FA7FF6 /* UIHighScores.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BC998123D85FFF0024A1BA /* UIHighScores.framework */; };
-		3481DC3423D89B0F00FA7FF6 /* UISprites.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3481DC1C23D887E700FA7FF6 /* UISprites.framework */; };
-		3481DC3523D89B7300FA7FF6 /* UIAlphaNumeric.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3403BCA523D7562E00C29047 /* UIAlphaNumeric.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3481DC3723D89BDD00FA7FF6 /* UISprites.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3481DC1C23D887E700FA7FF6 /* UISprites.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34BC994623D760E30024A1BA /* Sprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BC994523D760E30024A1BA /* Sprite.swift */; };
 		34D7225E221ADEF200A46057 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7225D221ADEF200A46057 /* AppDelegate.swift */; };
 		34D72260221ADEF200A46057 /* InvadersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7225F221ADEF200A46057 /* InvadersViewController.swift */; };
@@ -30,22 +26,33 @@
 		34D722812224319A00A46057 /* fastinvader1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 34D722802224319900A46057 /* fastinvader1.wav */; };
 		34D72283222558AB00A46057 /* SoundFX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D72282222558AB00A46057 /* SoundFX.swift */; };
 		34FC7B7023E06312007E0E3A /* Invaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34FC7B6F23E06312007E0E3A /* Invaders.swift */; };
+		34FC7B8A23E09F1A007E0E3A /* UIAlphaNumeric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34FC7B8923E09F08007E0E3A /* UIAlphaNumeric.framework */; };
+		34FC7B8B23E09F1A007E0E3A /* UIAlphaNumeric.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34FC7B8923E09F08007E0E3A /* UIAlphaNumeric.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		34FC7B8C23E09F21007E0E3A /* UISprites.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34FC7B8323E09EF7007E0E3A /* UISprites.framework */; };
+		34FC7B8D23E09F21007E0E3A /* UISprites.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34FC7B8323E09EF7007E0E3A /* UISprites.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		3403BCA423D7562E00C29047 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 348F9F9023D7230A0007FC65;
-			remoteInfo = UIAlphaNumeric;
-		};
 		34BC998023D85FFF0024A1BA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 34BC995423D854360024A1BA;
 			remoteInfo = UIHighScores;
+		};
+		34FC7B8223E09EF7007E0E3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 34FC7B7E23E09EF7007E0E3A /* UISprites.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 348F9F5823CE15440007FC65;
+			remoteInfo = UISprites;
+		};
+		34FC7B8823E09F08007E0E3A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 34FC7B8423E09F07007E0E3A /* UIAlphaNumeric.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 348F9F9023D7230A0007FC65;
+			remoteInfo = UIAlphaNumeric;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -56,19 +63,17 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				3481DC3723D89BDD00FA7FF6 /* UISprites.framework in CopyFiles */,
-				3481DC3523D89B7300FA7FF6 /* UIAlphaNumeric.framework in CopyFiles */,
 				3481DC2023D8884700FA7FF6 /* UIHighScores.framework in CopyFiles */,
+				34FC7B8D23E09F21007E0E3A /* UISprites.framework in CopyFiles */,
+				34FC7B8B23E09F1A007E0E3A /* UIAlphaNumeric.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIAlphaNumeric.xcodeproj; path = ../UIAlphaNumeric/UIAlphaNumeric.xcodeproj; sourceTree = "<group>"; };
 		343A37F823E0554600BB90B2 /* Sounds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sounds.swift; sourceTree = "<group>"; };
 		343A37FA23E056C200BB90B2 /* SetupGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupGame.swift; sourceTree = "<group>"; };
-		3481DC1C23D887E700FA7FF6 /* UISprites.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UISprites.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		34BC994523D760E30024A1BA /* Sprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sprite.swift; sourceTree = "<group>"; };
 		34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIHighScores.xcodeproj; path = ../UIHighScores/UIHighScores.xcodeproj; sourceTree = "<group>"; };
 		34D7225A221ADEF200A46057 /* Retro Invaders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Retro Invaders.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +92,9 @@
 		34D722802224319900A46057 /* fastinvader1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fastinvader1.wav; sourceTree = "<group>"; };
 		34D72282222558AB00A46057 /* SoundFX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFX.swift; sourceTree = "<group>"; };
 		34FC7B6F23E06312007E0E3A /* Invaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invaders.swift; sourceTree = "<group>"; };
+		34FC7B7623E092BE007E0E3A /* UIAlphaNumeric.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UIAlphaNumeric.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		34FC7B7E23E09EF7007E0E3A /* UISprites.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UISprites.xcodeproj; path = ../UISprites/UISprites.xcodeproj; sourceTree = "<group>"; };
+		34FC7B8423E09F07007E0E3A /* UIAlphaNumeric.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIAlphaNumeric.xcodeproj; path = ../UIAlphaNumeric/UIAlphaNumeric.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,8 +102,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3481DC3423D89B0F00FA7FF6 /* UISprites.framework in Frameworks */,
-				3481DC2523D8890000FA7FF6 /* UIAlphaNumeric.framework in Frameworks */,
+				34FC7B8C23E09F21007E0E3A /* UISprites.framework in Frameworks */,
+				34FC7B8A23E09F1A007E0E3A /* UIAlphaNumeric.framework in Frameworks */,
 				3481DC2623D8890700FA7FF6 /* UIHighScores.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,18 +111,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3403BCA023D7562E00C29047 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				3403BCA523D7562E00C29047 /* UIAlphaNumeric.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		3403BCA623D756A400C29047 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3481DC1C23D887E700FA7FF6 /* UISprites.framework */,
+				34FC7B7623E092BE007E0E3A /* UIAlphaNumeric.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -139,8 +139,9 @@
 		34D72251221ADEF200A46057 = {
 			isa = PBXGroup;
 			children = (
+				34FC7B7E23E09EF7007E0E3A /* UISprites.xcodeproj */,
+				34FC7B8423E09F07007E0E3A /* UIAlphaNumeric.xcodeproj */,
 				34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */,
-				3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */,
 				34D7225C221ADEF200A46057 /* UIViewInvaders */,
 				34D7225B221ADEF200A46057 /* Products */,
 				3403BCA623D756A400C29047 /* Frameworks */,
@@ -185,6 +186,22 @@
 				343A37F823E0554600BB90B2 /* Sounds.swift */,
 			);
 			path = Sounds;
+			sourceTree = "<group>";
+		};
+		34FC7B7F23E09EF7007E0E3A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				34FC7B8323E09EF7007E0E3A /* UISprites.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		34FC7B8523E09F07007E0E3A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				34FC7B8923E09F08007E0E3A /* UIAlphaNumeric.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,12 +253,16 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 3403BCA023D7562E00C29047 /* Products */;
-					ProjectRef = 3403BC9F23D7562E00C29047 /* UIAlphaNumeric.xcodeproj */;
+					ProductGroup = 34FC7B8523E09F07007E0E3A /* Products */;
+					ProjectRef = 34FC7B8423E09F07007E0E3A /* UIAlphaNumeric.xcodeproj */;
 				},
 				{
 					ProductGroup = 34BC997B23D85FFF0024A1BA /* Products */;
 					ProjectRef = 34BC997A23D85FFF0024A1BA /* UIHighScores.xcodeproj */;
+				},
+				{
+					ProductGroup = 34FC7B7F23E09EF7007E0E3A /* Products */;
+					ProjectRef = 34FC7B7E23E09EF7007E0E3A /* UISprites.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -252,18 +273,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		3403BCA523D7562E00C29047 /* UIAlphaNumeric.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = UIAlphaNumeric.framework;
-			remoteRef = 3403BCA423D7562E00C29047 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		34BC998123D85FFF0024A1BA /* UIHighScores.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = UIHighScores.framework;
 			remoteRef = 34BC998023D85FFF0024A1BA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		34FC7B8323E09EF7007E0E3A /* UISprites.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UISprites.framework;
+			remoteRef = 34FC7B8223E09EF7007E0E3A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		34FC7B8923E09F08007E0E3A /* UIAlphaNumeric.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UIAlphaNumeric.framework;
+			remoteRef = 34FC7B8823E09F08007E0E3A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -328,6 +356,7 @@
 		34D7226A221ADEF500A46057 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -389,6 +418,7 @@
 		34D7226B221ADEF500A46057 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -484,7 +514,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jaypeeff.UIViewInvaders;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jaypeeff.retroinvaders;
 				PRODUCT_NAME = "Retro Invaders";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
