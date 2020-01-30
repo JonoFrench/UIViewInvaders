@@ -10,7 +10,6 @@
 		343A37F923E0554600BB90B2 /* Sounds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343A37F823E0554600BB90B2 /* Sounds.swift */; };
 		343A37FB23E056C200BB90B2 /* SetupGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 343A37FA23E056C200BB90B2 /* SetupGame.swift */; };
 		3481DC2023D8884700FA7FF6 /* UIHighScores.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34BC998123D85FFF0024A1BA /* UIHighScores.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		3481DC2623D8890700FA7FF6 /* UIHighScores.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34BC998123D85FFF0024A1BA /* UIHighScores.framework */; };
 		34BC994623D760E30024A1BA /* Sprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34BC994523D760E30024A1BA /* Sprite.swift */; };
 		34D7225E221ADEF200A46057 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7225D221ADEF200A46057 /* AppDelegate.swift */; };
 		34D72260221ADEF200A46057 /* InvadersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34D7225F221ADEF200A46057 /* InvadersViewController.swift */; };
@@ -30,6 +29,7 @@
 		34FC7B8B23E09F1A007E0E3A /* UIAlphaNumeric.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34FC7B8923E09F08007E0E3A /* UIAlphaNumeric.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34FC7B8C23E09F21007E0E3A /* UISprites.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34FC7B8323E09EF7007E0E3A /* UISprites.framework */; };
 		34FC7B8D23E09F21007E0E3A /* UISprites.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 34FC7B8323E09EF7007E0E3A /* UISprites.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		34FC7BFF23E1ECDC007E0E3A /* UIHighScores.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34FC7BFB23E1ECDC007E0E3A /* UIHighScores.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,9 +92,11 @@
 		34D722802224319900A46057 /* fastinvader1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fastinvader1.wav; sourceTree = "<group>"; };
 		34D72282222558AB00A46057 /* SoundFX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundFX.swift; sourceTree = "<group>"; };
 		34FC7B6F23E06312007E0E3A /* Invaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Invaders.swift; sourceTree = "<group>"; };
-		34FC7B7623E092BE007E0E3A /* UIAlphaNumeric.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UIAlphaNumeric.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		34FC7B7E23E09EF7007E0E3A /* UISprites.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UISprites.xcodeproj; path = ../UISprites/UISprites.xcodeproj; sourceTree = "<group>"; };
 		34FC7B8423E09F07007E0E3A /* UIAlphaNumeric.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UIAlphaNumeric.xcodeproj; path = ../UIAlphaNumeric/UIAlphaNumeric.xcodeproj; sourceTree = "<group>"; };
+		34FC7BFB23E1ECDC007E0E3A /* UIHighScores.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIHighScores.framework; path = "../../Library/Developer/Xcode/DerivedData/UIViewInvaders-gtuyjeyucsbajxagjwqilucddnif/Build/Products/Debug-iphoneos/UIHighScores.framework"; sourceTree = "<group>"; };
+		34FC7C0023E1ED23007E0E3A /* UIAlphaNumeric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIAlphaNumeric.framework; path = "../../Library/Developer/Xcode/DerivedData/UIViewInvaders-gtuyjeyucsbajxagjwqilucddnif/Build/Products/Debug-iphoneos/UIAlphaNumeric.framework"; sourceTree = "<group>"; };
+		34FC7C0223E1ED33007E0E3A /* UISprites.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UISprites.framework; path = "../../Library/Developer/Xcode/DerivedData/UIViewInvaders-gtuyjeyucsbajxagjwqilucddnif/Build/Products/Debug-iphoneos/UISprites.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +106,7 @@
 			files = (
 				34FC7B8C23E09F21007E0E3A /* UISprites.framework in Frameworks */,
 				34FC7B8A23E09F1A007E0E3A /* UIAlphaNumeric.framework in Frameworks */,
-				3481DC2623D8890700FA7FF6 /* UIHighScores.framework in Frameworks */,
+				34FC7BFF23E1ECDC007E0E3A /* UIHighScores.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,7 +116,9 @@
 		3403BCA623D756A400C29047 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				34FC7B7623E092BE007E0E3A /* UIAlphaNumeric.framework */,
+				34FC7C0223E1ED33007E0E3A /* UISprites.framework */,
+				34FC7C0023E1ED23007E0E3A /* UIAlphaNumeric.framework */,
+				34FC7BFB23E1ECDC007E0E3A /* UIHighScores.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -477,6 +481,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9GZ8FVR7LN;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -501,7 +506,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 9GZ8FVR7LN;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -516,6 +523,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaypeeff.retroinvaders;
 				PRODUCT_NAME = "Retro Invaders";
+				PROVISIONING_PROFILE_SPECIFIER = "JPF Retro Dist";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

@@ -81,7 +81,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     var silos:[Silo] = []
     var soundFX:SoundFX = SoundFX()
     var scoreView:StringViewArray = StringViewArray()
-    var highScore:UIHighScores?
+    var highScore:UIHighScores = UIHighScores()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -174,7 +174,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         introView = UIView(frame: CGRect(x: 0, y: 0, width: (coverView?.frame.width)!, height: (coverView?.frame.height)!))
         highScore = UIHighScores.init(xPos: 0, yPos: highScoreYpos, width: (introView?.frame.width)!, height: ((coverView?.frame.height)!) - (highScoreHeight))
         
-        if let introView = introView, let coverView = coverView, let highScore = highScore {
+        if let introView = introView, let coverView = coverView {
             let w = coverView.frame.width
             let h = coverView.frame.height
             coverView.backgroundColor = UIColor.black.withAlphaComponent(0.10)
@@ -250,9 +250,9 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             })
         }
         
-        if let hiscore = highScore {
-            hiscore.removeHighscore()
-        }
+//        if let hiscore = highScore {
+            highScore.removeHighscore()
+//        }
     }
     
     fileprivate func removeWonInvaders(){
@@ -298,12 +298,12 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
                     gameoverView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
                     gameoverView.alpha = 0
                 }, completion: { (finished: Bool) in
-                    if (self.highScore?.isNewHiScore(score: self.model.score))! {
+                    if (self.highScore.isNewHiScore(score: self.model.score)) {
                         self.introView = UIView(frame: CGRect(x: 0, y: 0, width: (self.coverView?.frame.width)!, height: (self.coverView?.frame.height)!))
                         self.introView?.alpha = 0
                         self.model.gameState = .hiScore
-                        self.highScore?.showNewHiScore(frame: CGRect(x: 0, y: 100, width: (self.coverView?.frame.width)!, height: 480))
-                        self.introView?.addSubview((self.highScore?.newHighScoreView!)!)
+                        self.highScore.showNewHiScore(frame: CGRect(x: 0, y: 100, width: (self.coverView?.frame.width)!, height: 480))
+                        self.introView?.addSubview(self.highScore.newHighScoreView)
                         self.coverView?.alpha = 1
                         self.coverView?.addSubview(self.introView!)
                         self.introView?.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
@@ -394,7 +394,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
     fileprivate func startGame() {
         self.removeIntroInvaders()
         UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
-            self.highScore?.highScoreView.alpha = 0
+            self.highScore.highScoreView.alpha = 0
             self.coverView!.alpha = 0
         }, completion: { (finished: Bool) in
             self.introView?.removeFromSuperview()
@@ -668,18 +668,18 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
         guard model.gameState == .hiScore else {
             return
         }
-        if let hiscore = highScore {
-            hiscore.charDown()
-        }
+       // if let hiscore = highScore {
+            highScore.charDown()
+       // }
     }
     
     @objc func rightTapped(gesture:UIGestureRecognizer) {
         guard model.gameState == .hiScore else {
             return
         }
-        if let hiscore = highScore {
-            hiscore.charUp()
-        }
+        //if let hiscore = highScore {
+            highScore.charUp()
+        //}
     }
     
     
@@ -704,10 +704,10 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             generator.impactOccurred()
         }
         if model.gameState == .hiScore {
-            if let hiscore = highScore, let introView = introView {
-                hiscore.alphaPos += 1
-                if (hiscore.alphaPos == 3) {
-                    hiscore.addScores(score: model.score)
+            if let introView = introView {
+                highScore.alphaPos += 1
+                if (highScore.alphaPos == 3) {
+                    highScore.addScores(score: model.score)
                     
                     UIView.animate(withDuration: 0.5, delay: 0.5, options: [], animations: {
                         introView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1).rotated(by: CGFloat.pi)
@@ -720,7 +720,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
                         self.setIntro()
                     })
                 } else {
-                    hiscore.hilightChar()
+                    highScore.hilightChar()
                     
                 }
             }
