@@ -47,8 +47,11 @@ extension InvadersViewController {
            leftButton?.layer.shouldRasterize = true
            rightButton?.layer.shouldRasterize = true
            
-           
-           
+        leftButton?.backgroundColor = .clear
+        rightButton?.backgroundColor = .clear
+        fireButton?.backgroundColor = .clear
+        baseLine?.backgroundColor = .clear
+
            if #available(iOS 11.0, *) {
                leftButton?.layer.cornerRadius = (leftButton?.frame.height)! / 2
                leftButton?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
@@ -75,7 +78,7 @@ extension InvadersViewController {
            }
            
            fireButton?.layer.borderWidth = 5
-           fireButton?.layer.borderColor = UIColor.white.cgColor
+           fireButton?.layer.borderColor = UIColor.red.cgColor
            leftButton?.layer.borderWidth = 5
            leftButton?.layer.borderColor = UIColor.white.cgColor
            rightButton?.layer.borderWidth = 5
