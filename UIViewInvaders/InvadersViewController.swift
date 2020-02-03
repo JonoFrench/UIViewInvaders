@@ -180,6 +180,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             coverView.backgroundColor = UIColor.black.withAlphaComponent(0.10)
             coverView.addSubview(introView)
             introView.backgroundColor = .clear
+            highScore.drawScoreView()
             let alpha:UIAlphaNumeric = UIAlphaNumeric()
             
             let title = UIView(frame: CGRect(x: 0, y: titleY, width: Int(w), height: titleHeight))
@@ -247,6 +248,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
                 invader.spriteView?.center = CGPoint(x: self.viewWidth / 2, y: 20)
             }, completion: { (finished: Bool) in
                 invader.spriteView?.removeFromSuperview()
+                invader.stopAnimating = true
             })
         }
         
@@ -267,6 +269,8 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             invader.spriteView?.center = CGPoint(x: self.viewWidth / 2, y: self.viewHeight  )
         }, completion: { (finished: Bool) in
             invader.spriteView?.removeFromSuperview()
+            invader.stopAnimating = true
+
         })}
         
         model.gameState = .ending
@@ -332,6 +336,8 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             if let isv = i.spriteView {
                 isv.removeFromSuperview()
             }
+            i.stopAnimating = true
+
         }
         invaders.removeAll()
         
@@ -346,12 +352,16 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             if let bsv = b.spriteView {
                 bsv.removeFromSuperview()
             }
+            b.stopAnimating = true
+
         }
         bombs.removeAll()
         
         if let bul = bullet?.spriteView {
             bul.removeFromSuperview()
         }
+        bullet?.stopAnimating = true
+
         model.bulletFired = false
         
         base?.spriteView?.removeFromSuperview()
@@ -383,6 +393,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             if let bsv = b.spriteView {
                 bsv.removeFromSuperview()
             }
+            b.stopAnimating = true
         }
         bombs.removeAll()
         if motherShip != nil {
@@ -422,7 +433,7 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
             let x = (motherShip?.position.x)!
             if x < -20 {
                 motherShip?.spriteView?.removeFromSuperview()
-                motherShip = nil
+                motherShip?.stopAnimating = true
             } else {
                 motherShip?.position = CGPoint(x: x - 1, y: yPos)
             }
@@ -448,12 +459,14 @@ class InvadersViewController: UIViewController,UIGestureRecognizerDelegate {
                 if pos.y <= 0 {
                     model.bulletFired = false
                     bullet.spriteView?.removeFromSuperview()
+                    bullet.stopAnimating = true
                 } else {
                     bullet.position = CGPoint(x: pos.x, y: pos.y - 8)
                     for inv in invaders {
                         if inv.checkHit(pos: spriteView.center) == true {
                             self.soundFX.hitSound()
                             spriteView.removeFromSuperview()
+                            bullet.stopAnimating = true
                             model.bulletFired = false
                             model.score += 10
                             model.deadCount += 1

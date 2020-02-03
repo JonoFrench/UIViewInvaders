@@ -20,10 +20,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(c) JonoFrench 2020" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A0Y-OJ-vxd">
-                                <rect key="frame" x="16" y="470" width="343" height="82"/>
+                                <rect key="frame" x="16" y="470" width="343" height="197"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="82" id="0iA-ex-UQ8"/>
+                                    <constraint firstAttribute="height" constant="197" id="2xr-fc-wb2"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AmericanTypewriter" family="American Typewriter" pointSize="27"/>
                                 <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -32,13 +32,13 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="A0Y-OJ-vxd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="6mB-rn-3i7"/>
                             <constraint firstItem="e3c-AS-LoU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="9zg-WK-agJ"/>
                             <constraint firstItem="e3c-AS-LoU" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="C1p-2M-855"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="A0Y-OJ-vxd" secondAttribute="trailing" constant="16" id="HFZ-PN-sFA"/>
-                            <constraint firstItem="A0Y-OJ-vxd" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="SSi-R3-NbW"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="A0Y-OJ-vxd" secondAttribute="trailing" constant="16" id="JqF-W3-eRu"/>
                             <constraint firstItem="e3c-AS-LoU" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="UxV-E6-i5Z"/>
                             <constraint firstItem="e3c-AS-LoU" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="VnS-tY-ZG3"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="A0Y-OJ-vxd" secondAttribute="bottom" constant="115" id="iku-iK-lJM"/>
+                            <constraint firstItem="A0Y-OJ-vxd" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="sGK-MV-xpI"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
